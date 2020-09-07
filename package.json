@@ -6,6 +6,7 @@
     "express": "^4.12.3",
     "fs": "0.0.1-security",
     "minicap": "^0.1.0",
+    "socket.io": "^2.3.0",
     "ws": "^1.1.1"
   }
 }

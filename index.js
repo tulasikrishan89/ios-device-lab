@@ -1,37 +1,56 @@
-const fs = require('fs')
-const express = require('express')
+// index.js
+// Get our dependencies
+var express = require("express");
+var socket = require("socket.io");
+var fs = require("fs");
+var path = require("path");
 
-const path = require('path')
+// initialize our express app
+var app = express();
 
-const app = express()
+var port = 9090;
 
-app.use('/static', express.static(path.join(__dirname, 'uploads')))
+// have our app start listening
+var server = app.listen(port, function() {
+  console.log("Listening at http://localhost:" + port);
+});
 
-app.get('/getimages', (req, res) => {
-    let images = getImagesFromDir(path.join(__dirname, 'uploads'))
+// Specify a directory to serve static files
+app.use(express.static("views"));
 
-    res.render('index', {title: 'Node.js - Auto Generate Gallery from a Directory'})
-})
-function getImagesFromDir(dirPath) {
+// initialize our socket by passing in our express server
+var sock = socket(server);
 
-    let allImages = []
+// respond to initial connection with our server
+sock.on("connection", function(socket) {
+  console.log("made connection with socket " + socket.id);
 
-    let files = fs.readdirSync(dirPath)
+  // when the server receives a chat event
+  socket.on("chat", function(data) {
+    // use emit to send the “chat” event to everybody that is connected, including the sender
+    sock.sockets.emit("chat", data);
+  });
+});
 
-    for(file in files){
-        let fileLocation = path.join(dirPath, file)
-        var stat = fs.statSync(fileLocation)
 
-        if(stat && stat.isDirectory){
-            getImagesFromDir(fileLocation)
-        }
-        else if (stat && stat.isFile() && ['.jpg', '.png']
-        .indexOf(path.extname(fileLocation)) !== -1){
-            allImages.push('static/'+file)
-        }
-    }
+// function getImagesFromDir(dirPath) {
 
-    return allImages
-}
+//     let allImages = []
 
-app.listen(5000)
+//     let files = fs.readdirSync(dirPath)
+
+//     for(file in files){
+//         let fileLocation = path.join(dirPath, file)
+//         var stat = fs.statSync(fileLocation)
+
+//         if(stat && stat.isDirectory){
+//             getImagesFromDir(fileLocation)
+//         }
+//         else if (stat && stat.isFile() && ['.jpg', '.png']
+//         .indexOf(path.extname(fileLocation)) !== -1){
+//             allImages.push('static/'+file)
+//         }
+//     }
+
+//     return allImages
+// }

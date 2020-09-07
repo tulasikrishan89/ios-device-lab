@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charet="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <canvas id="myCanvas" style="border: 1px solid red;"  width="300" height="600"></canvas>
+        <img src="../uploads/00008030-001A550A2643802E1.png" id="image" alt="" width="300" height="600">
+        <button onclick="myImages()">Next</button>
+
+
+        <script>
+
+            var images = ["../uploads/00008030-001A550A2643802E1.png",
+                            "../uploads/00008030-001A550A2643802E2.png",
+                            "../uploads/00008030-001A550A2643802E3.png",
+                            "../uploads/00008030-001A550A2643802E4.png",
+                            "../uploads/00008030-001A550A2643802E5.png",
+                            "../uploads/00008030-001A550A2643802E6.png",
+                            "../uploads/00008030-001A550A2643802E7.png",
+                            "../uploads/00008030-001A550A2643802E8.png",
+                            "../uploads/00008030-001A550A2643802E9.png",
+                            "../uploads/00008030-001A550A2643802E10.png",
+                            "../uploads/00008030-001A550A2643802E11.png",
+                            "../uploads/00008030-001A550A2643802E12.png",
+                            "../uploads/00008030-001A550A2643802E13.png",
+                            "../uploads/00008030-001A550A2643802E14.png",
+                            "../uploads/00008030-001A550A2643802E15.png",
+                            "../uploads/00008030-001A550A2643802E16.png",
+                            "../uploads/00008030-001A550A2643802E17.png",
+                            "../uploads/00008030-001A550A2643802E18.png",
+                            "../uploads/00008030-001A550A2643802E19.png",
+                            "../uploads/00008030-001A550A2643802E20.png",
+                            "../uploads/00008030-001A550A2643802E21.png",
+                            "../uploads/00008030-001A550A2643802E22.png",
+                            "../uploads/00008030-001A550A2643802E23.png",
+                            "../uploads/00008030-001A550A2643802E24.png",
+                            "../uploads/00008030-001A550A2643802E25.png",
+                            "../uploads/00008030-001A550A2643802E26.png",
+                            "../uploads/00008030-001A550A2643802E27.png",
+                            "../uploads/00008030-001A550A2643802E28.png",
+                        ]
+
+        async function myImages(){
+            for(var i=0;i<images.length;i++){
+
+                await new Promise(r => setTimeout(r, 300));
+
+                //document.getElementById("image").src = images[i];
+
+            }
+        }
+
+        // window.onload = function() {
+        //     var canvas = document.getElementById("myCanvas");
+        //     var ctx = canvas.getContext("2d");
+        //     var x = canvas.width/2;
+        //     var y = canvas.height-30;
+        //     var img = document.getElementById("image");
+        //     ctx.drawImage(img, 10, 10);
+        // }
+
+        var canvas = document.getElementById("myCanvas");
+
+        var ctx = canvas.getContext("2d");
+
+        var x = 0;
+        var y = 0;
+
+var fps1 = 30;
+var now1;
+var then1 = Date.now();
+var interval1 = 4000/fps1;
+var delta1;
+
+var frames1;
+var currentFrame1 = 0;
+
+var requestAnimationFrame = window.requestAnimationFrame ||
+                    window.mozRequestAnimationFrame	||
+                    window.webkitRequestAnimationFrame ||
+                    window.msRequestAnimationFrame;
+                            
+
+function animation1(){
+    window.requestAnimationFrame(animation1);
+    now1 = Date.now();
+    delta1 = now1 - then1;
+    
+    if (delta1 > interval1)
+    {
+        then1 = now1 - (delta1 % interval1);
+        currentFrame1 %= frames1.length;
+        //document.images["tones1"].src =frames1[currentFrame1];
+        document.getElementById("image").src = frames1[currentFrame1];
+        currentFrame1 = currentFrame1 + 1;
+    
+    }
+
+}
+
+frames1 = new Array(
+    "../uploads/00008030-001A550A2643802E1.png",
+    "../uploads/00008030-001A550A2643802E2.png",
+    "../uploads/00008030-001A550A2643802E3.png",
+    "../uploads/00008030-001A550A2643802E4.png",
+    "../uploads/00008030-001A550A2643802E5.png",
+    "../uploads/00008030-001A550A2643802E6.png",
+    "../uploads/00008030-001A550A2643802E7.png",
+    "../uploads/00008030-001A550A2643802E8.png",
+    "../uploads/00008030-001A550A2643802E9.png",
+    "../uploads/00008030-001A550A2643802E10.png",
+    "../uploads/00008030-001A550A2643802E11.png",
+    "../uploads/00008030-001A550A2643802E12.png",
+    "../uploads/00008030-001A550A2643802E13.png",
+    "../uploads/00008030-001A550A2643802E14.png",
+    "../uploads/00008030-001A550A2643802E15.png",
+    "../uploads/00008030-001A550A2643802E16.png",
+    "../uploads/00008030-001A550A2643802E17.png",
+    "../uploads/00008030-001A550A2643802E18.png",
+    "../uploads/00008030-001A550A2643802E19.png",
+    "../uploads/00008030-001A550A2643802E20.png",
+    "../uploads/00008030-001A550A2643802E21.png",
+    "../uploads/00008030-001A550A2643802E22.png",
+    "../uploads/00008030-001A550A2643802E23.png",
+    "../uploads/00008030-001A550A2643802E24.png",
+    "../uploads/00008030-001A550A2643802E25.png",
+    "../uploads/00008030-001A550A2643802E26.png",
+    "../uploads/00008030-001A550A2643802E27.png",
+    "../uploads/00008030-001A550A2643802E28.png");
+
+   
+   
+   animation1();
+
+        // window.requestAnimationFrame(function loop(){
+
+        //     ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        //     ctx.drawImage(images[1], 10, 10)
+
+        //     ctx.drawImage(images[28], 10, 10)
+
+        //     window.requestAnimationFrame(loop)
+
+
+        // })
+
+
+
+
+
+
+
+// function BackFrame () {
+//   this.blob = null
+// }
+
+// BackFrame.prototype.swap = function (blob) {
+//   this.blob = blob
+// }
+
+// BackFrame.prototype.consume = function () {
+//   var blob = this.blob
+//   this.blob = null
+//   return blob
+// }
+
+// BackFrame.prototype.destroy = function () {
+//   this.consume()
+// }
+
+// function FrontFrame (name) {
+//   this.name = name
+//   this.blob = null
+//   this.image = new Image()
+//   this.url = null
+//   this.loading = false
+//   this.loaded = false
+//   this.fresh = false
+
+//   this.onLoad = function () {
+//     this.loading = false
+//     this.loaded = true
+//     this.fresh = true
+//   }.bind(this)
+
+//   this.onError = function () {
+//     this.loading = false
+//     this.loaded = false
+//   }.bind(this)
+// }
+
+// FrontFrame.prototype.load = function (blob) {
+//   // If someone's calling load() they're already sure that they don't need
+//   // the the current frame anymore.
+//   this.reset()
+
+//   // Convenience check that must come after the reset.
+//   if (!blob) {
+//     return
+//   }
+
+//   this.blob = blob
+//   this.url = URL.createObjectURL(this.blob)
+//   this.loading = true
+//   this.loaded = false
+//   this.fresh = false
+//   this.image.onload = this.onLoad
+//   this.image.onerror = this.onError
+//   this.image.src = this.url
+// }
+
+// FrontFrame.prototype.reset = function () {
+//   this.loading = false
+//   this.loaded = false
+//   if (this.blob) {
+//     this.blob = null
+//     URL.revokeObjectURL(this.url)
+//     this.url = null
+//   }
+// }
+
+// FrontFrame.prototype.consume = function () {
+//   if (!this.fresh) {
+//     return null
+//   }
+
+//   this.fresh = false
+//   return this
+// }
+
+// FrontFrame.prototype.destroy = function () {
+//   this.reset()
+//   this.image = null
+// }
+
+// function Pipeline () {
+//   this.back = new BackFrame()
+//   this.mid = new FrontFrame('mid')
+//   this.front = new FrontFrame('front')
+// }
+
+// Pipeline.prototype.push = function (blob) {
+//   this.back.swap(blob)
+
+//   // If the mid frame isn't loading or waiting to be consumed, let's
+//   // ask it to load this new frame to speed up things.
+//   if (!this.mid.loading && !this.mid.loaded) {
+//     this.mid.load(this.back.consume())
+//   }
+// }
+
+// Pipeline.prototype.consume = function () {
+//   if (this.mid.loaded) {
+//     const mid = this.mid
+//     this.mid = this.front
+//     this.front = mid
+//     this.mid.load(this.back.consume())
+//   } else if (!this.mid.loading) {
+//     this.mid.load(this.back.consume())
+//   }
+
+//   return this.front.consume()
+// }
+
+// Pipeline.prototype.destroy = function () {
+//   this.back.destroy()
+//   this.mid.destroy()
+//   this.front.destroy()
+// }
+
+// var pipeline = new Pipeline()
+// var canvas = document.getElementById("myCanvas");
+// var renderLoop = new RenderLoop(pipeline, canvas)
+
+// function RenderLoop (pipeline, canvas) {
+//     this.timer = null
+//     this.pipeline = pipeline
+//     this.canvas = canvas
+//     this.g = canvas.getContext('2d')
+// }
+
+// RenderLoop.prototype.start = function () {
+//     this.stop()
+//     this.next()
+// }
+
+// RenderLoop.prototype.stop = function () {
+//     cancelAnimationFrame(this.timer)
+// }
+
+// RenderLoop.prototype.next = function () {
+//     this.timer = requestAnimationFrame(this.run.bind(this))
+// }
+
+// RenderLoop.prototype.run = function () {
+//     var frame = this.pipeline.consume()
+//     if (frame) {
+//         this.canvas.width = frame.image.width
+//         this.canvas.height = frame.image.height
+//         this.g.drawImage(frame.image, 0, 0)
+//     }
+//     this.next()
+// }
+
+
+
+        // function CanvasRender(canvasElement, options) {
+        //     this.options = options
+        //     this.context = canvasElement.getContext('2d')
+
+        //     var devicePixelRatio = window.devicePixelRatio || 1
+
+        //     var backingStoreRatio = this.context.webkitBackingStorePixelRatio ||
+        //     this.context.mozBackingStorePixelRatio ||
+        //     this.context.msBackingStorePixelRatio ||
+        //     this.context.oBackingStorePixelRatio ||
+        //     this.context.backingStorePixelRatio || 1
+
+        //     this.frontBackRatio = devicePixelRatio / backingStoreRatio
+
+        //     if (options.autoScaleForRetina && devicePixelRatio !== backingStoreRatio) {
+        //         var oldWidth = canvasElement.width
+        //         var oldHeight = canvasElement.height
+
+        //         canvasElement.width = oldWidth * this.frontBackRatio
+        //         canvasElement.height = oldHeight * this.frontBackRatio
+
+        //         canvasElement.style.width = oldWidth + 'px'
+        //         canvasElement.style.height = oldHeight + 'px'
+
+        //         this.context.scale(this.frontBackRatio, this.frontBackRatio)
+        //     }
+        // }
+
+        // CanvasRender.prototype.draw = function(image) {
+        //     this.context.drawImage(image, 0, 0)
+        // }
+
+        // CanvasRender.prototype.clear = function() {
+        // this.context.clearRect(0, 0, this.context.canvas.width,
+        //     this.context.canvas.height)
+        // }
+
+        </script>
+
+    </body>
+</html>

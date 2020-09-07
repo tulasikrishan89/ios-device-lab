@@ -1,11 +1,11 @@
 {
-  "name": "readimage",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+  "dependencies": {
+    "adbkit": "^2.11.1",
+    "bluebird": "^3.7.2",
+    "debug": "^2.3.2",
+    "express": "^4.12.3",
+    "fs": "0.0.1-security",
+    "minicap": "^0.1.0",
+    "ws": "^1.1.1"
+  }
 }

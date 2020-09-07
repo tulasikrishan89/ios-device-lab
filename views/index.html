@@ -2,11 +2,10 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charet="utf-8">
-        <title></title>
     </head>
     <body>
         <canvas id="myCanvas" style="border: 1px solid red;"  width="300" height="600"></canvas>
-        <img src="../uploads/00008030-001A550A2643802E0.png" id="image" alt="" width="300" height="600">
+        <img src="uploads/00008030-001A550A2643802E1.png" id="image" alt="" width="300" height="600">
         <!-- <button onclick="myImages()">Next</button> -->
 
 
@@ -42,6 +41,7 @@ function animation1(){
     {
         then1 = now1 - (delta1 % interval1);
         currentFrame1 %= frames1.length;
+        //console.log("frames length is: "+frames1.length);
         //document.images["tones1"].src =frames1[currentFrame1];
         document.getElementById("image").src = frames1[currentFrame1];
 
@@ -61,9 +61,8 @@ window.onload = function() {
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
     currentFrame1 %= frames1.length;
-    document.getElementById("images").src = frames1[currentFrame1];
     var img = document.getElementById("images");
-    ctx.drawImage(img, 10, 10);
+    //ctx.drawImage(img, 10, 10);
     //ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     currentFrame1 = currentFrame1 + 1;
@@ -72,56 +71,56 @@ window.onload = function() {
 };
 
 frames1 = new Array(
-    "../uploads/00008030-001A550A2643802E1.png",
-    "../uploads/00008030-001A550A2643802E2.png",
-    "../uploads/00008030-001A550A2643802E3.png",
-    "../uploads/00008030-001A550A2643802E4.png",
-    "../uploads/00008030-001A550A2643802E5.png",
-    "../uploads/00008030-001A550A2643802E6.png",
-    "../uploads/00008030-001A550A2643802E7.png",
-    "../uploads/00008030-001A550A2643802E8.png",
-    "../uploads/00008030-001A550A2643802E9.png",
-    "../uploads/00008030-001A550A2643802E10.png",
-    "../uploads/00008030-001A550A2643802E11.png",
-    "../uploads/00008030-001A550A2643802E12.png",
-    "../uploads/00008030-001A550A2643802E13.png",
-    "../uploads/00008030-001A550A2643802E14.png",
-    "../uploads/00008030-001A550A2643802E15.png",
-    "../uploads/00008030-001A550A2643802E16.png",
-    "../uploads/00008030-001A550A2643802E17.png",
-    "../uploads/00008030-001A550A2643802E18.png",
-    "../uploads/00008030-001A550A2643802E19.png",
-    "../uploads/00008030-001A550A2643802E20.png",
-    "../uploads/00008030-001A550A2643802E21.png",
-    "../uploads/00008030-001A550A2643802E22.png",
-    "../uploads/00008030-001A550A2643802E23.png",
-    "../uploads/00008030-001A550A2643802E24.png",
-    "../uploads/00008030-001A550A2643802E25.png",
-    "../uploads/00008030-001A550A2643802E26.png",
-    "../uploads/00008030-001A550A2643802E27.png",
-    "../uploads/00008030-001A550A2643802E28.png",
-    "../uploads/00008030-001A550A2643802E29.png",
-    "../uploads/00008030-001A550A2643802E30.png",
-    "../uploads/00008030-001A550A2643802E31.png",
-    "../uploads/00008030-001A550A2643802E32.png",
-    "../uploads/00008030-001A550A2643802E33.png",
-    "../uploads/00008030-001A550A2643802E34.png",
-    "../uploads/00008030-001A550A2643802E35.png",
-    "../uploads/00008030-001A550A2643802E36.png",
-    "../uploads/00008030-001A550A2643802E37.png",
-    "../uploads/00008030-001A550A2643802E38.png",
-    "../uploads/00008030-001A550A2643802E39.png",
-    "../uploads/00008030-001A550A2643802E40.png",
-    "../uploads/00008030-001A550A2643802E41.png",
-    "../uploads/00008030-001A550A2643802E42.png",
-    "../uploads/00008030-001A550A2643802E43.png",
-    "../uploads/00008030-001A550A2643802E44.png",
-    "../uploads/00008030-001A550A2643802E45.png",
-    "../uploads/00008030-001A550A2643802E46.png",
-    "../uploads/00008030-001A550A2643802E47.png",
-    "../uploads/00008030-001A550A2643802E48.png",
-    "../uploads/00008030-001A550A2643802E49.png"
-    );
+    "uploads/00008030-001A550A2643802E1.png",
+    "uploads/00008030-001A550A2643802E2.png",
+    "uploads/00008030-001A550A2643802E3.png",
+    "uploads/00008030-001A550A2643802E4.png",
+    "uploads/00008030-001A550A2643802E5.png",
+    "uploads/00008030-001A550A2643802E6.png",
+    "uploads/00008030-001A550A2643802E7.png",
+    "uploads/00008030-001A550A2643802E8.png",
+    "uploads/00008030-001A550A2643802E9.png",
+    "uploads/00008030-001A550A2643802E10.png",
+    "uploads/00008030-001A550A2643802E11.png",
+    "uploads/00008030-001A550A2643802E12.png",
+    "uploads/00008030-001A550A2643802E13.png",
+    "uploads/00008030-001A550A2643802E14.png",
+    "uploads/00008030-001A550A2643802E15.png",
+    "uploads/00008030-001A550A2643802E16.png",
+    "uploads/00008030-001A550A2643802E17.png",
+    "uploads/00008030-001A550A2643802E18.png",
+    "uploads/00008030-001A550A2643802E19.png",
+    "uploads/00008030-001A550A2643802E20.png",
+    "uploads/00008030-001A550A2643802E21.png",
+    "uploads/00008030-001A550A2643802E22.png",
+    "uploads/00008030-001A550A2643802E23.png",
+    "uploads/00008030-001A550A2643802E24.png",
+    "uploads/00008030-001A550A2643802E25.png",
+    "uploads/00008030-001A550A2643802E26.png",
+    "uploads/00008030-001A550A2643802E27.png",
+    "uploads/00008030-001A550A2643802E28.png",
+    "uploads/00008030-001A550A2643802E29.png",
+    "uploads/00008030-001A550A2643802E30.png",
+    "uploads/00008030-001A550A2643802E31.png",
+    "uploads/00008030-001A550A2643802E32.png",
+    "uploads/00008030-001A550A2643802E33.png",
+    "uploads/00008030-001A550A2643802E34.png",
+    "uploads/00008030-001A550A2643802E35.png",
+    "uploads/00008030-001A550A2643802E36.png",
+    "uploads/00008030-001A550A2643802E37.png",
+    "uploads/00008030-001A550A2643802E38.png",
+    "uploads/00008030-001A550A2643802E39.png",
+    "uploads/00008030-001A550A2643802E40.png",
+    "uploads/00008030-001A550A2643802E41.png",
+    "uploads/00008030-001A550A2643802E42.png",
+    "uploads/00008030-001A550A2643802E43.png",
+    "uploads/00008030-001A550A2643802E44.png",
+    "uploads/00008030-001A550A2643802E45.png",
+    "uploads/00008030-001A550A2643802E46.png",
+    "uploads/00008030-001A550A2643802E47.png",
+    "uploads/00008030-001A550A2643802E48.png",
+    "uploads/00008030-001A550A2643802E49.png"
+   );
 
 //animate();
 animation1();

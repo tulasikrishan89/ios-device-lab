@@ -1,335 +1,830 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <head>
+        <title>Device Controller</title>
         <meta charet="utf-8">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     </head>
     <body>
-        <canvas id="myCanvas" style="border: 1px solid red;"  width="300" height="600"></canvas>
-        <img src="uploads/00008030-001A550A2643802E1.png" id="image" alt="" width="300" height="600">
-        <!-- <button onclick="myImages()">Next</button> -->
+        <div class="wrapper">
+            <section class="content">
+    
+                <!-- <div class="col-sm-10 col-md-6"> -->
+                    <div class="box box-success">
+    
+                        <div style="text-align:center;">
+                          <span id="ScreenCoordinates">(0, 0)</span>
+                        </div>
+                        <!-- <span class="finger finger-0" style="transform: translate3d(0, 0, 0)"></span>
+                        <span class="finger finger-1"></span> -->
+
+                        <!-- <input type="text" id="screenkeyboard" onkeypress="sendText()"> -->
+
+
+                        <div id="frame" style="margin:0 auto;width:360px;" onPress(event) onmousemove="ScreenCoordinates(event)" onmouseout="clearCoor()">
+                            <!-- <canvas id="screen" style="border: 1px solid red;"  width="300" height="600"></canvas> -->
+                            <img id="screen" style="-webkit-user-select: none;margin: auto;" src="http://192.168.0.71:9100/" width="375" height="667">
+                        </div>
+                        <div style="text-align:center;" class="btn-home">
+                            <!-- <span id="home" class="btn btn-success" onclick="home()">Home</span> -->
+                            <button  id="home" type="button" onclick="home()">HOME</button>
+                        </div>
+    
+                    </div>
+                <!-- </div> -->
+            </section>
+          </div>
+
+        <script>
+            // function myFunction() {
+            //     alert("You pressed a key inside the input field");
+            // }
+
+        </script>
+        <script>
+
+            // const socket = new WebSocket('ws://localhost:9090');
+            
+            // socket.addEventListener('open', () => {
+            //     socket.send('Hello World!');
+            // });
+            
+            // socket.addEventListener('message', event => {
+            // console.log(`Message from server: ${event.data}`);
+            // });
+            
+            function setupWebSocket() {
+                var size = null;
+                //const PORT = process.env.PORT || 8080
+                var ws = new WebSocket("ws://localhost:"+9090);
+
+                ws.onopen = function () {
+                    console.log("connected");
+                }
+
+                return ws;
+            }
+            var ws = setupWebSocket();
+
+            ws.onopen = function() {
+                console.log('Opened connection 🎉');
+
+                // ws.addEventListener('message', function (event) {
+                //     this.size = event.data
+                //     console.log('Size : ', JSON.parse(event.data));
+                // });
+
+                // ws.onmessage = e => {
+                //     console.log(JSON.parse(e.data))
+                //     this.size = JSON.parse(e.data)
+                //     //console.log("width : "+this.size.width)
+                //     //console.log("height : "+this.size.height)
+                //     if(this.size.width != null){
+                //         var img = document.getElementById('screen');
+                //         width = this.size.width;
+                //         height = this.size.height;
+
+                //         resizeImg(img, width, height)
+                //     }
+                // }
+
+                // send data to the server
+                var json = JSON.stringify({ message: 'Hello 👋 Mr.Server' });
+                ws.send(json);
+            }
+
+            function resizeImg(img, width, height) {
+                img.width = width;
+                img.height = height;
+            }
+        </script>
+
+<script>
+    // var canvas, ctx, $shot,$save,$imgs;
+    // var imgType = 'png', imgW = 414, imgH = 736, imgX = 0, imgY = 0;
+    // function init () {
+    //     canvas = document.getElementById('screen');
+    //     ctx = canvas.getContext('2d');
+    //     $shot = document.getElementById('shot');
+    //     $save = document.getElementById('save');
+    //     $imgs = document.getElementById('imgs');
+    //     bind();
+    // }
+    // function bind () {
+    //     $shot.onclick = function (e) {
+    //         $imgs.appendChild(Canvas2Image.convertToImage(canvas, imgW/3, imgH/3, imgType));
+    //     };
+    //     $save.onclick = function (e) {
+    //         var f = 'ShotSave';
+    //         Canvas2Image.saveAsImage(canvas, imgW, imgH, imgType, f);
+    //     }
+    // }
+    // onload = init;
+</script>
+
+<script>
+    var WSURL2 = "ws://" + window.location.host + "/websocket2";
+    var ws2 = null;
+
+    // var deviceLogsShow = new Vue({
+    //     el: "#logs",
+    //     data: {
+    //         device: {
+    //             logs: '',
+    //         },
+    //     },
+    // })
+
+    // var deviceDetail = new Vue({
+    //     el: "#deviceinfo",
+    //     data: {
+    //         device: {
+    //             name: '',
+    //             udid: '',
+    //             apps: '',
+    //             logs: '',
+    //             type: '',
+    //             version: '',
+    //         },
+    //     },
+    //     mounted: function () {
+    //         this.refresh();
+    //     },
+    //     methods: {
+    //         refresh: function () {
+    //             console.log("getting device info...");
+    //             var self = this;
+    //             $.ajax({
+    //                 url: "/ios/getDeviceInfo?",
+    //                 method: "GET",
+    //             })
+    //                 .then(function (ret) {
+    //                     self.device.udid = ret.udid
+    //                     self.device.name = ret.name
+    //                     self.device.apps = ret.apps
+    //                     self.device.type = ret.type
+    //                     self.device.version = ret.version
+    //                     console.log(udid)
+    //                     var typeString = self.device.type
+    //                     var realTypeName = iosinfo[typeString]["iPhoneType"]
+    //                     console.log(realTypeName)
+    //                     document.getElementById('deviceTypeName').textContent = realTypeName
+    //                     imgX = iosinfo[typeString]["ptX"]
+    //                     imgY = iosinfo[typeString]["ptY"]
+    //                 })
+    //         },
+    //     },
+    // });
+
+    // function refreshdetail() {
+    //     console.log("getting device info...");
+    //     var self = this;
+    //     $.ajax({
+    //         url: "/ios/getDeviceInfo?",
+    //         method: "GET",
+    //     })
+    //         .then(function (ret) {
+    //             deviceDetail.device.udid = ret.udid
+    //             deviceDetail.device.name = ret.name
+    //             deviceDetail.device.apps = ret.apps
+    //             deviceDetail.device.type = ret.type
+    //             deviceDetail.device.version = ret.version
+    //             console.log(udid)
+    //             var typeString = deviceDetail.device.type
+    //             var realTypeName = iosinfo[typeString]["iPhoneType"]
+    //             console.log(realTypeName)
+    //             document.getElementById('deviceTypeName').textContent = realTypeName
+    //             imgX = iosinfo[typeString]["ptX"]
+    //             imgY = iosinfo[typeString]["ptY"]
+    //         })
+    // }
+
+    // var countTimer = new Vue({
+    //     el: "#countTimer",
+    //     data: {
+    //         record: {
+    //             running: false,
+    //             startTime: 0,
+    //             ticker: null,
+    //             duration: 0,
+    //             prompt: ''
+    //         }
+    //     },
+    //     filters: {
+    //         formatDuration: function (value) {
+    //             function pad2(number) {
+    //                 return (number < 10 ? '0' : '') + number
+    //             }
+    //             var totalSeconds = Math.floor(value / 1000); //"00:00:00"
+    //             var mms = value % 1000;
+    //             var ms = totalSeconds % 60;
+    //             var mm = (totalSeconds - ms) / 60
+    //             return "" + pad2(mm) + " : " + pad2(ms);
+    //         }
+    //     },
+    //     mounted: function () {
+    //         var self = this;
+    //         self.record.startTime = new Date().getTime();
+    //         self.record.ticker = setInterval(function () {
+    //             self.record.duration = new Date().getTime() - self.record.startTime;
+    //         }.bind(self), 1000);
+    //     }
+    // });
+
+    function ScreenCoordinates(e){
+        var img = document.getElementById("screen");
+    	var cRect = img.getBoundingClientRect();
+
+    	var x = Math.round((e.clientX) - cRect.left);
+    	var y = Math.round(e.clientY - cRect.top);
+
+    	var coor = "(" + x + "," + y + ")";
+    	  //console.log("Coordinates : "+coor);
+    	  document.getElementById("ScreenCoordinates").innerHTML = coor;
+   	};
+
+   	function clearCoor() {
+   	  document.getElementById("ScreenCoordinates").innerHTML = "(" + 0 + "," + 0 + ")";;
+   	};
+
+    function findScreenCoords(mouseEvent){
+      var xpos;
+      var ypos;
+      if (mouseEvent){
+        //FireFox
+        xpos = mouseEvent.screenX;
+        ypos = mouseEvent.screenY;
+      }else{
+        //IE
+        xpos = window.event.screenX;
+        ypos = window.event.screenY;
+      }
+      document.getElementById("screenCoords").innerHTML = xpos + ", " + ypos;
+    };
+
+    // function refreshlogs() {
+    //     if (document.getElementById('getlogbtn').textContent == "Start log scraping") {
+    //         var id = document.getElementById('filter-bundleid').value
+    //         if (id == "" || id.indexOf(".") == -1) {
+    //             alert("Please enter the bundle id of the filter log!")
+    //             return
+    //         }
+    //         deviceLogsShow.device.logs = "";
+    //         console.log("Start crawling logs...");
+    //         var obj = document.getElementById('logs');
+    //         ws2 = new WebSocket(WSURL2 + "/" + id)
+    //         ws2.onclose = function () {
+    //             console.log('ws2 onclose', arguments)
+    //         }
+    //         ws2.onerror = function () {
+    //             console.log('ws2 onerror', arguments)
+    //         }
+    //         ws2.onmessage = function (message) {
+    //             deviceLogsShow.device.logs += message.data;
+    //             console.log('msg got:' + message.data);
+    //             document.getElementById('logs').value += message.data
+    //             //Whether to automatically scroll at the bottom
+    //             //obj.scrollTop =  obj.scrollHeight;
+    //             var scrollTop = $("#logs")[0].scrollHeight;
+    //             $("#logs").scrollTop(scrollTop);
+    //         }
+    //         ws2.onopen = function () {
+    //             console.log('ws2 onopen', arguments)
+    //             ws2.send(id);
+    //         }
+    //         document.getElementById('getlogbtn').textContent = "Stop log crawling"
+    //     } else {
+    //         ws2.close();
+    //         console.log("Stop crawling logs...");
+    //         document.getElementById('getlogbtn').textContent = "Start log scraping"
+    //     }
+    // }
+
+    function home() {
+        // $.ajax({
+        //     url: "/ios/home",
+        //     method: "GET",
+        // })
+        // .then(function (ret) {
+        //     console.log(ret);
+        // })
+
+        var url = 'http://192.168.0.71:8100';
+        axios({
+            method: 'post',
+            url: url+'/wda/homescreen',
+            data: {
+            }
+        });
+    }
+    // function launchApp() {
+    //     var id = document.getElementById('bundleid').value
+    //     if (id != "") {
+    //         $.ajax({
+    //             url: "/ios/launchapp?id=" + id,
+    //             method: "GET",
+    //         })
+    //             .then(function (ret) {
+    //                 console.log(ret);
+    //             })
+    //     }
+    // }
+    // function uninstallApp() {
+    //     var id = document.getElementById('uninstallid').value
+    //     if (id != "") {
+    //         $.ajax({
+    //             url: "/ios/uninstall?id=" + id,
+    //             method: "GET",
+    //         })
+    //             .then(function (ret) {
+    //                 console.log(ret);
+    //             })
+    //     }
+    // }
+    // function getDeviceInfo() {
+    //     var udid = "";
+    //     $.ajax({
+    //         url: "/ios/getDeviceInfo?",
+    //         method: "GET",
+    //     })
+    //         .then(function (ret) {
+    //             udid = ret.udid
+    //             console.log(udid)
+    //         })
+    // }
+    
+
+    document.addEventListener("keydown", function onPress(event) {//keypress keydown
+        //event.keyCode;//event.key;
+        var text = '';
+        if (event.key === "Backspace") {
+            text = "\b";
+        }else if (event.shiftKey | event.ctrlKey | event.key === "Enter" | event.key === "CapsLock" | event.key === "tab") {
+            text = '';
+        }else if(event.key === " "){
+            text = ' ';
+        }else{
+            text = encodeURI(encodeURI(event.key));
+        }
+        // console.log("'"+event.key+"'");
+        var url = 'http://192.168.0.71:8100';
+        axios.post(url+'/session/'+sessionId+'/wda/keys', {
+            "value":[text],
+            "frequency":60
+        })
+        .then(function (response) {
+            // console.log(response);
+            // document.getElementById('screenkeyboard').value = '';
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+    });
+    // function clearText() {
+    //     $.ajax({
+    //         url: "/ios/clear",
+    //         method: "GET",
+    //     })
+    //         .then(function (ret) {
+    //             console.log(ret);
+    //         })
+    // }
+</script>
 
 
 <script>
-
-var fps1 = 30;
-var now1;
-var then1 = Date.now();
-var interval1 = 4000/fps1;
-var delta1;
-
-var frames1;
-var currentFrame1 = 0;
-
-var requestAnimationFrame = window.requestAnimationFrame ||
-                    window.mozRequestAnimationFrame	||
-                    window.webkitRequestAnimationFrame ||
-                    window.msRequestAnimationFrame;
-            
-//var canvas = document.getElementById('myCanvas')
-
-
-function animation1(){
-
-    var canvas = document.getElementById("myCanvas");
-    var ctx = canvas.getContext("2d");
-
-    window.requestAnimationFrame(animation1);
-    now1 = Date.now();
-    delta1 = now1 - then1;
-    
-    if (delta1 > interval1)
-    {
-        then1 = now1 - (delta1 % interval1);
-        currentFrame1 %= frames1.length;
-        //console.log("frames length is: "+frames1.length);
-        //document.images["tones1"].src =frames1[currentFrame1];
-        document.getElementById("image").src = frames1[currentFrame1];
-
-        currentFrame1 = currentFrame1 + 1;
-    }
-}
-
-window.onload = function() {
-    // var ctx = document.getElementById('myCanvas').getContext('2d');
-    var canvas = document.getElementById("myCanvas");
-    var ctx = canvas.getContext("2d");
-    currentFrame1 %= frames1.length;
-    var img = document.getElementById("images");
-    //ctx.drawImage(img, 10, 10);
-    //ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    currentFrame1 = currentFrame1 + 1;
-    //ctx.drawImage(img, 10, 10);
-
-};
-
-frames1 = new Array(
-    "uploads/00008030-001A550A2643802E1.png",
-    "uploads/00008030-001A550A2643802E2.png",
-    "uploads/00008030-001A550A2643802E3.png",
-    "uploads/00008030-001A550A2643802E4.png",
-    "uploads/00008030-001A550A2643802E5.png",
-    "uploads/00008030-001A550A2643802E6.png",
-    "uploads/00008030-001A550A2643802E7.png",
-    "uploads/00008030-001A550A2643802E8.png",
-    "uploads/00008030-001A550A2643802E9.png",
-    "uploads/00008030-001A550A2643802E10.png",
-    "uploads/00008030-001A550A2643802E11.png",
-    "uploads/00008030-001A550A2643802E12.png",
-    "uploads/00008030-001A550A2643802E13.png",
-    "uploads/00008030-001A550A2643802E14.png",
-    "uploads/00008030-001A550A2643802E15.png",
-    "uploads/00008030-001A550A2643802E16.png",
-    "uploads/00008030-001A550A2643802E17.png",
-    "uploads/00008030-001A550A2643802E18.png",
-    "uploads/00008030-001A550A2643802E19.png",
-    "uploads/00008030-001A550A2643802E20.png",
-    "uploads/00008030-001A550A2643802E21.png",
-    "uploads/00008030-001A550A2643802E22.png",
-    "uploads/00008030-001A550A2643802E23.png",
-    "uploads/00008030-001A550A2643802E24.png",
-    "uploads/00008030-001A550A2643802E25.png",
-    "uploads/00008030-001A550A2643802E26.png",
-    "uploads/00008030-001A550A2643802E27.png",
-    "uploads/00008030-001A550A2643802E28.png",
-    "uploads/00008030-001A550A2643802E29.png",
-    "uploads/00008030-001A550A2643802E30.png",
-    "uploads/00008030-001A550A2643802E31.png",
-    "uploads/00008030-001A550A2643802E32.png",
-    "uploads/00008030-001A550A2643802E33.png",
-    "uploads/00008030-001A550A2643802E34.png",
-    "uploads/00008030-001A550A2643802E35.png",
-    "uploads/00008030-001A550A2643802E36.png",
-    "uploads/00008030-001A550A2643802E37.png",
-    "uploads/00008030-001A550A2643802E38.png",
-    "uploads/00008030-001A550A2643802E39.png",
-    "uploads/00008030-001A550A2643802E40.png",
-    "uploads/00008030-001A550A2643802E41.png",
-    "uploads/00008030-001A550A2643802E42.png",
-    "uploads/00008030-001A550A2643802E43.png",
-    "uploads/00008030-001A550A2643802E44.png",
-    "uploads/00008030-001A550A2643802E45.png",
-    "uploads/00008030-001A550A2643802E46.png",
-    "uploads/00008030-001A550A2643802E47.png",
-    "uploads/00008030-001A550A2643802E48.png",
-    "uploads/00008030-001A550A2643802E49.png"
-   );
-
-//animate();
-animation1();
-
-
-        // window.requestAnimationFrame(function loop(){
-
-        //     ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-        //     ctx.drawImage(images[1], 10, 10)
-
-        //     ctx.drawImage(images[28], 10, 10)
-
-        //     window.requestAnimationFrame(loop)
-
-
-        // })
-
-
-
-
-
-
-
-// function BackFrame () {
-//   this.blob = null
-// }
-
-// BackFrame.prototype.swap = function (blob) {
-//   this.blob = blob
-// }
-
-// BackFrame.prototype.consume = function () {
-//   var blob = this.blob
-//   this.blob = null
-//   return blob
-// }
-
-// BackFrame.prototype.destroy = function () {
-//   this.consume()
-// }
-
-// function FrontFrame (name) {
-//   this.name = name
-//   this.blob = null
-//   this.image = new Image()
-//   this.url = null
-//   this.loading = false
-//   this.loaded = false
-//   this.fresh = false
-
-//   this.onLoad = function () {
-//     this.loading = false
-//     this.loaded = true
-//     this.fresh = true
-//   }.bind(this)
-
-//   this.onError = function () {
-//     this.loading = false
-//     this.loaded = false
-//   }.bind(this)
-// }
-
-// FrontFrame.prototype.load = function (blob) {
-//   // If someone's calling load() they're already sure that they don't need
-//   // the the current frame anymore.
-//   this.reset()
-
-//   // Convenience check that must come after the reset.
-//   if (!blob) {
-//     return
-//   }
-
-//   this.blob = blob
-//   this.url = URL.createObjectURL(this.blob)
-//   this.loading = true
-//   this.loaded = false
-//   this.fresh = false
-//   this.image.onload = this.onLoad
-//   this.image.onerror = this.onError
-//   this.image.src = this.url
-// }
-
-// FrontFrame.prototype.reset = function () {
-//   this.loading = false
-//   this.loaded = false
-//   if (this.blob) {
-//     this.blob = null
-//     URL.revokeObjectURL(this.url)
-//     this.url = null
-//   }
-// }
-
-// FrontFrame.prototype.consume = function () {
-//   if (!this.fresh) {
-//     return null
-//   }
-
-//   this.fresh = false
-//   return this
-// }
-
-// FrontFrame.prototype.destroy = function () {
-//   this.reset()
-//   this.image = null
-// }
-
-// function Pipeline () {
-//   this.back = new BackFrame()
-//   this.mid = new FrontFrame('mid')
-//   this.front = new FrontFrame('front')
-// }
-
-// Pipeline.prototype.push = function (blob) {
-//   this.back.swap(blob)
-
-//   // If the mid frame isn't loading or waiting to be consumed, let's
-//   // ask it to load this new frame to speed up things.
-//   if (!this.mid.loading && !this.mid.loaded) {
-//     this.mid.load(this.back.consume())
-//   }
-// }
-
-// Pipeline.prototype.consume = function () {
-//   if (this.mid.loaded) {
-//     const mid = this.mid
-//     this.mid = this.front
-//     this.front = mid
-//     this.mid.load(this.back.consume())
-//   } else if (!this.mid.loading) {
-//     this.mid.load(this.back.consume())
-//   }
-
-//   return this.front.consume()
-// }
-
-// Pipeline.prototype.destroy = function () {
-//   this.back.destroy()
-//   this.mid.destroy()
-//   this.front.destroy()
-// }
-
-// var pipeline = new Pipeline()
-// var canvas = document.getElementById("myCanvas");
-// var renderLoop = new RenderLoop(pipeline, canvas)
-
-// function RenderLoop (pipeline, canvas) {
-//     this.timer = null
-//     this.pipeline = pipeline
-//     this.canvas = canvas
-//     this.g = canvas.getContext('2d')
-// }
-
-// RenderLoop.prototype.start = function () {
-//     this.stop()
-//     this.next()
-// }
-
-// RenderLoop.prototype.stop = function () {
-//     cancelAnimationFrame(this.timer)
-// }
-
-// RenderLoop.prototype.next = function () {
-//     this.timer = requestAnimationFrame(this.run.bind(this))
-// }
-
-// RenderLoop.prototype.run = function () {
-//     var frame = this.pipeline.consume()
-//     if (frame) {
-//         this.canvas.width = frame.image.width
-//         this.canvas.height = frame.image.height
-//         this.g.drawImage(frame.image, 0, 0)
-//     }
-//     this.next()
-// }
-
-
-
-        // function CanvasRender(canvasElement, options) {
-        //     this.options = options
-        //     this.context = canvasElement.getContext('2d')
-
-        //     var devicePixelRatio = window.devicePixelRatio || 1
-
-        //     var backingStoreRatio = this.context.webkitBackingStorePixelRatio ||
-        //     this.context.mozBackingStorePixelRatio ||
-        //     this.context.msBackingStorePixelRatio ||
-        //     this.context.oBackingStorePixelRatio ||
-        //     this.context.backingStorePixelRatio || 1
-
-        //     this.frontBackRatio = devicePixelRatio / backingStoreRatio
-
-        //     if (options.autoScaleForRetina && devicePixelRatio !== backingStoreRatio) {
-        //         var oldWidth = canvasElement.width
-        //         var oldHeight = canvasElement.height
-
-        //         canvasElement.width = oldWidth * this.frontBackRatio
-        //         canvasElement.height = oldHeight * this.frontBackRatio
-
-        //         canvasElement.style.width = oldWidth + 'px'
-        //         canvasElement.style.height = oldHeight + 'px'
-
-        //         this.context.scale(this.frontBackRatio, this.frontBackRatio)
-        //     }
-        // }
-
-        // CanvasRender.prototype.draw = function(image) {
-        //     this.context.drawImage(image, 0, 0)
-        // }
-
-        // CanvasRender.prototype.clear = function() {
-        // this.context.clearRect(0, 0, this.context.canvas.width,
-        //     this.context.canvas.height)
-        // }
-
-        </script>
+    var app = new Vue({
+        el: "#screen",
+        // delimiters: ["[[", "]]"],
+        data: {
+            display: {
+                width: 0,
+                height: 0,
+                naturalWidth: 0,
+                naturalHeight: 0,
+            },
+            refreshCount: 0,
+            sessionId: null,
+            pageHidden: false,
+            current: 0,
+            inputText: '',
+            wsAdmin: null,
+            record: {
+                running: false,
+                startTime: 0,
+                ticker: null,
+                duration: 0,
+                prompt: '',
+            },
+            records: [{
+                name: "20170603-test",
+            }]
+        },
+        filters: {
+            formatDuration: function (value) {
+                function pad2(number) {
+                    return (number < 10 ? '0' : '') + number
+                }
+                var totalSeconds = Math.floor(value / 1000); //"00:00:00"
+                var mms = value % 1000;
+                var ms = totalSeconds % 60;
+                var mm = (totalSeconds - ms) / 60
+                return "" + pad2(mm) + " : " + pad2(ms);
+            }
+        },
+        mounted: function () {
+            var self = this;
+            this.initTouchListener();
+            this.initScreenSize();
+            // this.home();
+            var self = this;
+            $("#screen")[0].onload = function (e) {
+                var nw = e.target.naturalWidth;
+                var nh = e.target.naturalHeight;
+                if (nw && nh && self.display.naturalHeight != nh) {
+                    self.display.naturalWidth = nw;
+                    self.display.naturalHeight = nh;
+                    self.initScreenSize();
+                    // console.log("Detect screen rotate");
+                }
+            }.bind(this);
+        },
+        methods: {
+            tap: function (x, y) {
+            	// console.log("tap func");
+                var self = this;
+                // return $.ajax({
+                //     url: "/ios/tap/?x=" + x + "&y=" + y,
+                //     method: "GET"
+                // }).then(function (ret) {
+                //     if (ret.status !== 0) {
+                //         console.log("tap fail"+ret.value);
+                //         return "Fail"
+                //     } else {
+                //     	console.log("tap success"+ret.value);
+                //         return "Success";
+                //     }
+                // })
+
+                var url = 'http://192.168.0.71:8100';
+                axios.post(url+'/session/'+sessionId+'/wda/tap/0', {
+                    "x": x,
+                    "y": y
+                })
+                .then(function (response) {
+                    // console.log("Success : "+response);
+                    return "Success";
+                })
+                .catch(function (error) {
+                    console.log("Error : "+error);
+                    return "Fail"
+                })
+
+            },
+            tapHold: function (x, y, duration) {
+                var self = this;
+                duration = duration / 1000
+                // return $.ajax({
+                //     url: "/ios/tapHold?x=" + x + "&y=" + y + "&duration=" + duration,
+                //     method: "GET"
+                // }).then(function (ret) {
+                //     if (ret.status !== 0) {
+                //         console.log(ret.value);
+                //     } else {
+                //         return "Success";
+                //     }
+                // })
+
+                var url = 'http://192.168.0.71:8100';
+                axios.post(url+'/session/'+sessionId+'/wda/touchAndHold', {
+                    "x":x,
+                    "y":y,
+                    "duration":duration
+                })
+                .then(function (response) {
+                    // console.log("Success : "+response);
+                    return "Success";
+                })
+                .catch(function (error) {
+                    console.log("Error : "+error);
+                    return "Fail"
+                })
+            },
+            swipe: function (fromX, fromY, toX, toY) {
+                var self = this;
+                // return $.ajax({
+                //     url: "/ios/swipe?fromX=" + fromX + "&fromY=" + fromY + "&toX=" + toX + "&toY=" + toY + "&duration=" + 0.08,
+                //     method: "GET"
+                // })
+
+                var url = 'http://192.168.0.71:8100';
+                axios.post(url+'/session/'+sessionId+'/wda/dragfromtoforduration', {
+                    "fromX":fromX,
+                    "fromY":fromY,
+                    "toX":toX,
+                    "toY":toY,
+                    "duration":0.08
+                })
+                .then(function (response) {
+                    // console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            home: function () {
+                // return $.ajax({
+                //     url: "/ios/homeScreen",
+                //     method: "GET"
+                // }).then(function (ret) {
+                //     console.log(ret);
+                // })
+
+                var url = 'http://192.168.0.71:8100';
+                axios({
+                    method: 'post',
+                    url: url+'/wda/homescreen',
+                    data: {
+                    }
+                });
+            },
+            sendText: function (text) {
+                // inputText = document.getElementById('input').value
+
+                // return $.ajax({
+                //     url: "/ios/inputText?value=" + inputText,
+                //     method: "GET"
+                // }).then(function (ret) {
+                //     console.log(ret);
+                // })
+
+                var url = 'http://192.168.0.71:8100';
+                axios.post(url+'/session/'+sessionId+'/wda/keys', {
+                    "value":[text],
+                    "frequency":60
+                })
+                .then(function (response) {
+                    // console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            },
+            clearText: function (n) {
+                this.sendText("\b".repeat(n || 30))
+            },
+            initScreenSize: function () {
+                // $.ajax({
+                //     url: "/status",
+                // })
+                // .then(function (ret) {
+                //     this.sessionId = ret.sessionId;
+                //     Object.assign(this.device, ret.value.device);
+                //     return $.ajax({
+                //         url: "/session/" + ret.sessionId + "/window/size",
+                //     })
+                // }.bind(this))
+                // .then(function (ret) {
+                //     this.display.width = ret.value.width;
+                //     this.display.height = ret.value.height;
+                // }.bind(this))
+                
+                var url = 'http://192.168.0.71:8100';
+                axios.get(url+'/status')
+                    .then(function (response) {
+                        // handle success
+                        // console.log(response);
+
+                        this.sessionId = response.data.sessionId;
+                        // Object.assign(this.device, response.data.value.ios);
+
+                        axios.get(url+'/session/' + sessionId + '/window/size')
+                            .then(function (response) {
+                                // console.log(response);
+                                // this.display.width = response.data.value.width;
+                                // this.display.height = response.data.value.height;
+                                var img = document.getElementById('screen');
+                                img.width = response.data.value.width;
+                                img.height = response.data.value.height;
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+            },
+            initTouchListener: function () {
+                var self = this;
+                var element = $("#screen")[0];
+                var screen = {
+                    bounds: {},
+                    firstPosition: {},
+                    secondPosition: {},
+                    beginTime: null,
+                }
+                var _longClickTimeout = 800;
+//                function calculateBounds() {
+//                    var el = element;
+//                    screen.bounds.w = el.offsetWidth
+//                    screen.bounds.h = el.offsetHeight
+//                    screen.bounds.x = 0
+//                    screen.bounds.y = 0
+//
+//                    while (el.offsetParent) {
+//                        screen.bounds.x += el.offsetLeft
+//                        screen.bounds.y += el.offsetTop
+//                        el = el.offsetParent
+//                    }
+//                }
+                function deactiveFinger(index) {
+                    $(".finger-" + index).removeClass("active").removeClass("longClick")
+                }
+                function convertPosition(event) {
+                    var e = event;
+                    if (e.originalEvent) {
+                        e = e.originalEvent
+                    }
+                    // Ignore mouse right click
+                    if (e.which === 3) {
+                        return;
+                    }
+                    e.preventDefault()
+//                    calculateBounds()
+                    var x = e.offsetX //+ 30
+                    var y = e.offsetY
+                    // console.log("convertPosition x: " + x + ", convertPosition y: " + e.offsetY)
+                    var convert =  {
+                        e: e,
+                        x: x,
+                        y: y,
+                        pageX: x,
+                        pageY: y,
+                    }
+                    // console.log(convert);
+                    return convert;
+                }
+                function stopMousing() {
+                    element.removeEventListener('mousemove', mouseMoveListener);
+                    document.removeEventListener('mouseup', mouseUpListener);
+                }
+
+                function mouseUpListener(event) {
+                    var p = convertPosition(event);
+                    // console.log("X: "+p.pageX +"Y : "+p.pageY);
+                    stopMousing()
+                    var first = screen.firstPosition,
+                        second = screen.secondPosition;
+                    screen.secondPosition = {};
+                    element.style.cursor = 'not-allowed'
+                    clearTimeout(screen.longClickKey);
+                    var defer;
+                    if (second && (second.x || second.y)) {
+                        // console.log("Swipe", first, second);
+                        defer = self.swipe(first.x, first.y, second.x, second.y);
+                    } else {
+                        var holdTime = new Date().getTime() - screen.beginTime;
+                        if (holdTime > _longClickTimeout) {
+                            // console.log("LongTap", first);
+                            defer = self.tapHold(first.x, first.y, holdTime)
+                        } else {
+                            // console.log("Tap", first);
+                            defer = self.tap(first.x, first.y)
+                        }
+                    }
+                    // defer.then(function () {
+                    //     console.log("Release operation")
+                        // deactiveFinger(0);
+                        // deactiveFinger(1);
+                        element.style.cursor = 'auto'
+                    // })
+                }
+                function mouseMoveListener(event) {
+                	//  console.log("in mouseMoveListener");
+                    var p = convertPosition(event);
+                    var first = screen.firstPosition;
+                    var distance = Math.sqrt((first.x - p.x) * (first.x - p.x) + (first.y - p.y) * (first.y - p.y));
+                    if (distance > 10) {
+                        screen.secondPosition = {
+                            x: p.x,
+                            y: p.y
+                        };
+                        console.log("in mouseMoveListener printing co-ordinates"+p);
+                        $(".finger-1")
+                            .addClass("active")
+                            .css("transform", 'translate3d(' + p.pageX + 'px,' + p.pageY + 'px,0)')
+                    } else {
+                        // deactiveFinger("1");
+                        screen.secondPosition = {};
+                    }
+                }
+                function mouseDownListener(event) {
+                    if (element.style.cursor == 'not-allowed') {
+                        return;
+                    }
+                    var p = convertPosition(event);
+                    var index = 0;
+                    $(".finger-" + index)
+                        .addClass("active")
+                        .css("transform", 'translate3d(' + p.pageX + 'px,' + p.pageY + 'px,0)')
+                    screen.longClickKey = setTimeout(function () {
+                        $(".finger-0").addClass("longClick");
+                    }, _longClickTimeout)
+                    screen.beginTime = new Date().getTime();
+                    screen.firstPosition = {
+                        x: p.x,
+                        y: p.y
+                    }
+                    element.addEventListener('mousemove', mouseMoveListener);
+                    document.addEventListener('mouseup', mouseUpListener);
+                }
+                element.addEventListener("mousedown", mouseDownListener);
+            }
+        }
+    })
+</script>
+
+<script type="text/javascript">
+    // function upload() {
+    //     var file = document.getElementById("uploadfile");
+    //     var fileInfo = file.files[0];
+    //     console.log(fileInfo);
+    //     if (!fileInfo) {
+    //         alert("Please select a file!");
+    //         return false;
+    //     }
+    //     var fileName = fileInfo.name;
+    //     //Get the file extension
+    //     var file_typename = fileName.substring(
+    //         fileName.lastIndexOf('.') + 1, fileName.length);
+    //     if (file_typename.toLowerCase() != 'ipa') {
+    //         alert("Please upload .ipa type files!");
+    //         return false;
+    //     }
+    //     try {
+    //         $.ajaxFileUpload({
+    //             url: '/ios/upload',   //Submitted path
+    //             type: 'post',
+    //             secureuri: false, //Whether to enable secure submission, the default is false
+    //             fileElementId: 'uploadfile', // file control id
+    //             dataType: 'json',
+    //             data: {},
+    //             success: function (data, status) {
+    //                 console.log(data);
+    //                 console.log(status);
+    //             },
+    //             error: function (data, status) {
+    //                 alert("upload failed");
+    //             }
+    //         });
+    //     } catch (err) {
+    //         alert("Please upload the .ipa file, do not upload other types!" + err.message);
+    //     }
+    // }
+</script>
+
+<script>
+
+    // var WSURL = "ws://" + window.location.host + "/websocket"
+
+    // function createTable(){
+    // 	var headers = device.apps.split(',');
+    // 	var table = "<table>";
+    // 	for (var i=0; i< headers.length; i++) {
+    // 	    table = table + "<tr><td>"+ headers[i]+"</td>";
+    // 	}
+    // 	table = table + "</table>";
+
+    // 	return table;
+    // }
+
+    // ws.onerror = function () {
+    //     console.log('onerror', arguments)
+    //     renderLoop.stop()
+    // }
+    // ws.onmessage = function (message) {
+    //     //console.log('got jpeg', arguments)
+    //     var blob = new Blob([message.data], {
+    //         type: 'image/jpeg'
+    //     })
+    //     pipeline.push(blob)
+    // }
+    // ws.onopen = function () {
+    //     console.log('onopen', arguments)
+    //     ws.send('1920x1080/0')
+    //     renderLoop.start()
+    // }
+</script>
 
     </body>
 </html>

@@ -3,10 +3,17 @@
     "adbkit": "^2.11.1",
     "bluebird": "^3.7.2",
     "debug": "^2.3.2",
-    "express": "^4.12.3",
+    "events": "^1.1.1",
+    "express": "^4.17.1",
     "fs": "0.0.1-security",
+    "images": "^3.0.2",
     "minicap": "^0.1.0",
+    "path": "^0.12.7",
+    "request-promise": "^4.2.6",
     "socket.io": "^2.3.0",
+    "teen_process": "^1.15.0",
+    "util": "^0.10.3",
+    "body-parser": "1.19.0",
     "ws": "^1.1.1"
   }
 }

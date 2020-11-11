@@ -6,8 +6,6 @@
 1. npm install
 
 ## Running
+1. goto repos/WebDriverAgent and configure based on https://github.com/appium/WebDriverAgent
 1. Start the app.js
-```
-PORT=8080 node app.js
-```
-2. Open http://localhost:8080 in your browser.
+2. Open http://localhost:9090 in your browser.

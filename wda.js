@@ -35,13 +35,11 @@ plugin.on('restart',function(){
 
 var WDA = {
   start: async function(){
-    
-
-    // var type = 'device'
-    // if(type=='device'){
-    //   proxyProMap.set(wdaPort,WDA.startIproxy(wdaPort,wdaRemotePort))
-    //   proxyProMap.set(mjpegPort,WDA.startIproxy(mjpegPort,wdaMjpegRemotePort))
-    // }
+    var type = 'device'
+    if(type=='device'){
+      proxyProMap.set(wdaPort,WDA.startIproxy(wdaPort,wdaRemotePort))
+      proxyProMap.set(mjpegPort,WDA.startIproxy(mjpegPort,wdaMjpegRemotePort))
+    }
     return WDA.startWda().then(function(){
       return WDA
     })
@@ -55,12 +53,15 @@ var WDA = {
   ,startIproxy:function(localPort,remotePort){
     //console.log("start iproxy with params:%d %d %s",localPort,remotePort,udid)
     let pro = new Subprocess("iproxy",["-s","0.0.0.0","-u",WDA.getDevices(),localPort,remotePort])
+    // let pro = new Subprocess("iproxy",["-u",WDA.getDevices(),localPort,remotePort])
+    
     pro.start();
-    pro.on("exit",(code,signal)=>{
-      console.log("exit with code :%d",code)
-      WDA.restartIproxy(localPort,remotePort);
-    });
+    // pro.on("exit",(code,signal)=>{
+    //   console.log("exit with code :%d",code)
+    //   WDA.restartIproxy(localPort,remotePort);
+    // });
     pro.on("output",(stdout,stderr)=>{
+
     });
     return pro
   }
@@ -116,10 +117,10 @@ var WDA = {
         // console.log(line)
 
         if(line.includes('ServerURLHere')){
-          // console.log(line)
-          baseUrl = line.replace("ServerURLHere->", "");
-          baseUrl = baseUrl.replace("<-ServerURLHere", "");
-          console.log("baseUrl : "+baseUrl);
+          console.log(line)
+          // baseUrl = line.replace("ServerURLHere->", "");
+          // baseUrl = baseUrl.replace("<-ServerURLHere", "");
+          // console.log("baseUrl : "+baseUrl);
         }
 
         // if (line.indexOf('=========')!=-1)

@@ -29,6 +29,7 @@ var ideviceList = Wda.getiDeviceList();
 console.log(ideviceList);
 
 Wda.startWda();
+// Wda.start();
 
 //server
 const server = http.createServer(app)

@@ -6,14 +6,22 @@
         <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <style>
+        .responsive {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        }
+        </style>
     </head>
     <body>
         <div class="wrapper">
             <section class="content">
-    
+
                 <!-- <div class="col-sm-10 col-md-6"> -->
                     <div class="box box-success">
-    
+
                         <div style="text-align:center;">
                           <span id="ScreenCoordinates">(0, 0)</span>
                         </div>
@@ -25,13 +33,15 @@
 
                         <div id="frame" style="margin:0 auto;width:360px;" onPress(event) onmousemove="ScreenCoordinates(event)" onmouseout="clearCoor()">
                             <!-- <canvas id="screen" style="border: 1px solid red;"  width="300" height="600"></canvas> -->
-                            <img id="screen" style="-webkit-user-select: none;margin: auto;" src="http://192.168.0.71:9100/" width="375" height="667">
+                            <img id="screen" style="-webkit-user-select: none;margin: auto;" src="http://127.0.0.1:9100/" width="375" height="667">
                         </div>
+                    
                         <div style="text-align:center;" class="btn-home">
                             <!-- <span id="home" class="btn btn-success" onclick="home()">Home</span> -->
-                            <button  id="home" type="button" onclick="home()">HOME</button>
+                            <!-- <button src="uploads/home-button.png" id="home" type="button" onclick="home()">HOME</button> -->
+                            <img src="uploads/home-button.png" width="50" id="home" type="button" onclick="home()">
                         </div>
-    
+
                     </div>
                 <!-- </div> -->
             </section>
@@ -46,15 +56,15 @@
         <script>
 
             // const socket = new WebSocket('ws://localhost:9090');
-            
+
             // socket.addEventListener('open', () => {
             //     socket.send('Hello World!');
             // });
-            
+
             // socket.addEventListener('message', event => {
             // console.log(`Message from server: ${event.data}`);
             // });
-            
+
             function setupWebSocket() {
                 var size = null;
                 //const PORT = process.env.PORT || 8080
@@ -301,7 +311,7 @@
     //         document.getElementById('getlogbtn').textContent = "Start log scraping"
     //     }
     // }
-
+    var url = 'http://127.0.0.1:8100';
     function home() {
         // $.ajax({
         //     url: "/ios/home",
@@ -311,7 +321,6 @@
         //     console.log(ret);
         // })
 
-        var url = 'http://192.168.0.71:8100';
         axios({
             method: 'post',
             url: url+'/wda/homescreen',
@@ -354,7 +363,7 @@
     //             console.log(udid)
     //         })
     // }
-    
+
 
     document.addEventListener("keydown", function onPress(event) {//keypress keydown
         //event.keyCode;//event.key;
@@ -369,7 +378,6 @@
             text = encodeURI(encodeURI(event.key));
         }
         // console.log("'"+event.key+"'");
-        var url = 'http://192.168.0.71:8100';
         axios.post(url+'/session/'+sessionId+'/wda/keys', {
             "value":[text],
             "frequency":60
@@ -408,6 +416,7 @@
             },
             refreshCount: 0,
             sessionId: null,
+            url: 'http://127.0.0.1:8100',
             pageHidden: false,
             current: 0,
             inputText: '',
@@ -438,6 +447,7 @@
         mounted: function () {
             var self = this;
             this.initTouchListener();
+            //this.initSession();
             this.initScreenSize();
             // this.home();
             var self = this;
@@ -447,6 +457,7 @@
                 if (nw && nh && self.display.naturalHeight != nh) {
                     self.display.naturalWidth = nw;
                     self.display.naturalHeight = nh;
+                    // self.initSession();
                     self.initScreenSize();
                     // console.log("Detect screen rotate");
                 }
@@ -469,7 +480,6 @@
                 //     }
                 // })
 
-                var url = 'http://192.168.0.71:8100';
                 axios.post(url+'/session/'+sessionId+'/wda/tap/0', {
                     "x": x,
                     "y": y
@@ -498,7 +508,6 @@
                 //     }
                 // })
 
-                var url = 'http://192.168.0.71:8100';
                 axios.post(url+'/session/'+sessionId+'/wda/touchAndHold', {
                     "x":x,
                     "y":y,
@@ -520,7 +529,6 @@
                 //     method: "GET"
                 // })
 
-                var url = 'http://192.168.0.71:8100';
                 axios.post(url+'/session/'+sessionId+'/wda/dragfromtoforduration', {
                     "fromX":fromX,
                     "fromY":fromY,
@@ -543,7 +551,6 @@
                 //     console.log(ret);
                 // })
 
-                var url = 'http://192.168.0.71:8100';
                 axios({
                     method: 'post',
                     url: url+'/wda/homescreen',
@@ -561,7 +568,7 @@
                 //     console.log(ret);
                 // })
 
-                var url = 'http://192.168.0.71:8100';
+                // var url = 'http://192.168.0.71:8100';
                 axios.post(url+'/session/'+sessionId+'/wda/keys', {
                     "value":[text],
                     "frequency":60
@@ -576,6 +583,45 @@
             },
             clearText: function (n) {
                 this.sendText("\b".repeat(n || 30))
+            },
+            initSession: function () {
+                // var url = 'http://192.168.0.71:8100';
+                axios.get(url+'/status')
+                    .then(function (response) {
+                        // handle success
+                        // console.log(response);
+
+                        this.sessionId = response.data.sessionId;
+                        // Object.assign(this.device, response.data.value.ios);
+
+                        if(response.data.sessionId==null)
+                            return;
+
+                        axios.post(url+'/session', {
+                                "capabilities":{
+                                "bundleId": "com.apple.mobilesafari",
+                                "autoLaunch": false,
+                                "waitForQuiescence": false
+                            }
+                        })
+                        .then(function (response) {
+                            console.log(response);
+                            this.sessionId = response.data.sessionId;
+                            // setTimeout(function(){ console.log("Hello"); }, 3000);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+
             },
             initScreenSize: function () {
                 // $.ajax({
@@ -592,8 +638,8 @@
                 //     this.display.width = ret.value.width;
                 //     this.display.height = ret.value.height;
                 // }.bind(this))
-                
-                var url = 'http://192.168.0.71:8100';
+
+                // var url = 'http://192.168.0.71:8100';
                 axios.get(url+'/status')
                     .then(function (response) {
                         // handle success
@@ -719,7 +765,7 @@
                             x: p.x,
                             y: p.y
                         };
-                        console.log("in mouseMoveListener printing co-ordinates"+p);
+                        // console.log("in mouseMoveListener printing co-ordinates"+p);
                         $(".finger-1")
                             .addClass("active")
                             .css("transform", 'translate3d(' + p.pageX + 'px,' + p.pageY + 'px,0)')

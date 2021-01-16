@@ -54,7 +54,7 @@ var WDA = {
     //console.log("start iproxy with params:%d %d %s",localPort,remotePort,udid)
     let pro = new Subprocess("iproxy",["-s","0.0.0.0","-u",WDA.getDevices(),localPort,remotePort])
     // let pro = new Subprocess("iproxy",["-u",WDA.getDevices(),localPort,remotePort])
-    
+
     pro.start();
     // pro.on("exit",(code,signal)=>{
     //   console.log("exit with code :%d",code)
@@ -67,7 +67,9 @@ var WDA = {
   }
   ,getDevices:function(){
     // console.log('get Devices')
-    udid = "00008030-001A550A2643802E";
+    const list = this.getiDeviceList;
+    console.log("list is :"+list);
+    udid = "00008101-001C15A20AD2001E";
     return udid;
   }
   ,getbaseUrl:function(){
@@ -138,7 +140,7 @@ var WDA = {
           if(checkTimer===null){
             batteryTimer = setInterval(WDA.getBatteryInfo,300000)
             checkTimer = setInterval(WDA.checkWdaStatus,3000)
-            
+
           }
           return resolve()
         }
@@ -193,7 +195,7 @@ var WDA = {
 
   ,GetRequest:function(uri,param='',bWithSession=false){
     var session = ''
-    
+
     if(bWithSession)
       session = util.format("/session/%s",WDA.getSessionid())
     let options = {
@@ -322,103 +324,6 @@ var WDA = {
         WDA.startWda(WDA.getDevices());
     }
   }
-
-  // ,getSize:function(){
-
-  //   if(WDA.getSessionid()== null){
-  //     WDA.initSession();
-  //   }
-
-  //   var uri = 'window/size'
-  //   var param = ''
-  //   var session = ''
-  //   var bWithSession=true
-    
-  //   if(bWithSession)
-  //     session = util.format("/session/%s",WDA.getSessionid())
-  //   let options = {
-  //     method:'GET',
-  //     uri:util.format("%s%s/%s%s",baseUrl,session,uri,param),
-  //     json:true,
-  //     headers:{
-  //         'Content-Type':'application/json'
-  //     }
-  //   }
-  //   console.log(options);
-
-  //   return requestPromise(options).then(function(resp){
-  //     //   console.log("size width : "+resp.value.width)
-  //     //   console.log("size height : "+resp.value.height)
-  //     // sessionId = resp.sessionId
-  //     return resp.value
-  //   }).catch(function(err){
-  //       // console.log('get request err',err)
-  //     return null
-  //   })
-  // }
-
-  // ,click:function(x,y,duration){
-  //   var body = {
-  //     x:x,
-  //     y:y,
-  //     duration:duration
-  //   }
-  //   WDA.PostData('wda/tap_stf',body,false)
-  // }
-
-  // ,swipe:function(swipeList,duration){
-  //   var actions = [
-  //     {
-  //       action:"press",
-  //       options:{
-  //           x:swipeList[0].x,
-  //           y:swipeList[0].y
-  //       }
-  //     }
-  //   ]
-  //   var time = duration
-  //   if(swipeList.length>2){
-  //     time = 50
-  //   }
-  //   for(i=1;i<swipeList.length;i++){
-  //     actions.push(
-  //       {
-  //         action:"wait",
-  //         options:{
-  //             ms:swipeList[i].t
-  //         }
-  //       }
-  //     )
-  //     actions.push(
-  //       {
-  //         action:"moveTo",
-  //         options:{
-  //             x:swipeList[i].x,
-  //             y:swipeList[i].y
-  //         }
-  //       }
-  //     )
-  //   }
-  //   actions.push({
-  //     action:"release",
-  //     options:{}
-  //   })
-  //   var body = {
-  //     actions:actions
-  //   }
-  //   WDA.PostData('touch/perform_stf',body,false)
-  // }
-
-  // ,drag:function(startx,starty,endx,endy,duration){
-  //   var body = {
-  //     fromX:Math.floor(startx),
-  //     fromY:Math.floor(starty),
-  //     toX:Math.floor(endx),
-  //     toY:Math.floor(endy),
-  //     duration:duration
-  //   }
-  //   WDA.PostData('wda/dragfromtoforduration_stf',body,false)
-  // }
 
 }
 module.exports = WDA;

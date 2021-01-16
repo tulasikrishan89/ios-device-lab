@@ -26,10 +26,9 @@ app.get('/config.js', (req, res) => {
 
 //connected devices
 var ideviceList = Wda.getiDeviceList();
-console.log(ideviceList);
+console.log("ideviceList : "+ideviceList);
 
 Wda.startWda();
-// Wda.start();
 
 //server
 const server = http.createServer(app)

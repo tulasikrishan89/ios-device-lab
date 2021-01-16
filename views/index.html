@@ -9,10 +9,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
         <style>
         .responsive {
-        width: 100%;
-        max-width: 400px;
-        height: auto;
+            width: 100%;
+            max-width: 400px;
+            height: auto;
         }
+        .pointer {cursor: pointer;}
         </style>
     </head>
     <body>
@@ -31,15 +32,20 @@
                         <!-- <input type="text" id="screenkeyboard" onkeypress="sendText()"> -->
 
 
-                        <div id="frame" style="margin:0 auto;width:360px;" onPress(event) onmousemove="ScreenCoordinates(event)" onmouseout="clearCoor()">
+                        <div id="frame" style="margin:0 auto;width:360px; " onPress(event) onmousemove="ScreenCoordinates(event)" onmouseout="clearCoor()">
                             <!-- <canvas id="screen" style="border: 1px solid red;"  width="300" height="600"></canvas> -->
-                            <img id="screen" style="-webkit-user-select: none;margin: auto;" src="http://127.0.0.1:9100/" width="375" height="667">
+                            <img id="screen" style="-webkit-user-select: none;margin: auto; cursor: pointer;" src="http://127.0.0.1:9100/" width="375" height="667">
                         </div>
                     
                         <div style="text-align:center;" class="btn-home">
                             <!-- <span id="home" class="btn btn-success" onclick="home()">Home</span> -->
                             <!-- <button src="uploads/home-button.png" id="home" type="button" onclick="home()">HOME</button> -->
                             <img src="uploads/home-button.png" width="50" id="home" type="button" onclick="home()">
+                            <img src="uploads/volume-up.png" width="50" id="volumeup" type="button" onclick="volumeup()">
+                            <img src="uploads/volume-down.png" width="50" id="volumedown" type="button" onclick="volumedown()">
+                            <img src="uploads/lock-icon.png" width="50" id="lock" type="button" onclick="lock()">
+                            <img src="uploads/un-lock-icon.png" width="50" id="unlock" type="button" onclick="unlock()">
+                            <img src="uploads/Bell-prod-icon.png" width="50" id="bell-prod" type="button" onclick="startApp()">
                         </div>
 
                     </div>
@@ -321,13 +327,81 @@
         //     console.log(ret);
         // })
 
+        // axios({
+        //     method: 'post',
+        //     url: url+'/wda/homescreen',
+        //     data: {
+        //     }
+        // });
+
+        axios.post(url+'/session/'+sessionId+'/wda/pressButton', {
+            "name":"home"
+        })
+        .then(function (response) {
+            // console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    function volumeup() {
+
+        axios.post(url+'/session/'+sessionId+'/wda/pressButton', {
+            "name":"volumeUp"
+        })
+        .then(function (response) {
+            // console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    function lock() {
+
         axios({
             method: 'post',
-            url: url+'/wda/homescreen',
+            url: url+'/wda/lock',
             data: {
             }
         });
     }
+
+    function unlock() {
+
+        axios({
+            method: 'post',
+            url: url+'/wda/unlock',
+            data: {
+            }
+        });
+    }
+
+    function volumedown() {
+        axios.post(url+'/session/'+sessionId+'/wda/pressButton', {
+            "name":"volumeDown"
+        })
+        .then(function (response) {
+            // console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    function startApp() {
+        axios.post(url+'/session/'+sessionId+'/wda/apps/activate', {
+            "bundleId":"ca.bell.selfserve.mybellmobile"
+        })
+        .then(function (response) {
+            // console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
     // function launchApp() {
     //     var id = document.getElementById('bundleid').value
     //     if (id != "") {
@@ -367,15 +441,26 @@
 
     document.addEventListener("keydown", function onPress(event) {//keypress keydown
         //event.keyCode;//event.key;
+        console.log(event);
         var text = '';
         if (event.key === "Backspace") {
             text = "\b";
-        }else if (event.shiftKey | event.ctrlKey | event.key === "Enter" | event.key === "CapsLock" | event.key === "tab") {
-            text = '';
+        // }else if (event.shiftKey | event.ctrlKey | event.key === "Enter" | event.key === "CapsLock" | event.key === "tab") {
+        //     text = '';
         }else if(event.key === " "){
             text = ' ';
         }else{
-            text = encodeURI(encodeURI(event.key));
+            var tempText = event.key
+            if (event.shiftKey) {
+                tempText = event.key.replace("Shift", "")
+            }else if (event.ctrlKey) {
+                tempText = event.key.replace("Control", "")
+            }else if (event.key === "Enter" ) {
+                tempText = event.key.replace("Enter", "")
+            }else if (event.key === "Tab" | event.key === "CapsLock" | event.key === "tab") {
+                tempText = event.key.replace(event.key, "")
+            }
+            text = encodeURI(encodeURI(tempText));
         }
         // console.log("'"+event.key+"'");
         axios.post(url+'/session/'+sessionId+'/wda/keys', {

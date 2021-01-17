@@ -3,6 +3,7 @@
     <head>
         <title>Device Controller</title>
         <meta charet="utf-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=0.1">
         <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -31,10 +32,10 @@
 
                         <!-- <input type="text" id="screenkeyboard" onkeypress="sendText()"> -->
 
-
+                        
                         <div id="frame" style="margin:0 auto;width:360px; " onPress(event) onmousemove="ScreenCoordinates(event)" onmouseout="clearCoor()">
                             <!-- <canvas id="screen" style="border: 1px solid red;"  width="300" height="600"></canvas> -->
-                            <img id="screen" style="-webkit-user-select: none;margin: auto; cursor: pointer;" src="http://127.0.0.1:9100/" width="375" height="667">
+                            <img id="screen" style="-webkit-user-select: none;margin: auto; cursor: pointer;" img style="-webkit-user-select: none;margin: auto;" src="http://127.0.0.1:9100/" width="375" height="667">
                         </div>
                     
                         <div style="text-align:center;" class="btn-home">

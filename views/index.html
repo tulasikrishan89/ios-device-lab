@@ -107,10 +107,10 @@
                 ws.send(json);
             }
 
-            function resizeImg(img, width, height) {
-                img.width = width;
-                img.height = height;
-            }
+            // function resizeImg(img, width, height) {
+            //     img.width = width;
+            //     img.height = height;
+            // }
         </script>
 
 <script>
@@ -798,7 +798,7 @@
                         pageX: x,
                         pageY: y,
                     }
-                    // console.log(convert);
+                    console.log("convertPosition : "+convert.x+" : "+convert.y);
                     return convert;
                 }
                 function stopMousing() {
@@ -825,7 +825,7 @@
                             // console.log("LongTap", first);
                             defer = self.tapHold(first.x, first.y, holdTime)
                         } else {
-                            // console.log("Tap", first);
+                            console.log("Tap", first);
                             defer = self.tap(first.x, first.y)
                         }
                     }

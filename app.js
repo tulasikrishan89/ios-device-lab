@@ -25,10 +25,12 @@ app.get('/config.js', (req, res) => {
 })
 
 //connected devices
-var ideviceList = Wda.getiDeviceList();
-console.log("ideviceList : "+ideviceList);
+// var ideviceList = Wda.getiDeviceList();
+// console.log("ideviceList : "+ideviceList);
 
-Wda.startWda();
+Wda.setDevice("c96e4f4016966c6b50c39e1168f5535ee1988f40");
+// Wda.startWda();
+Wda.start();
 
 //server
 const server = http.createServer(app)
@@ -86,7 +88,5 @@ wss.on('connection', function(socket) {
 
 });
 server.listen(PORT)
-
-
 
 console.info(`Listening on port ${PORT}`)

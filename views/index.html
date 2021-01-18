@@ -2,45 +2,47 @@
 <html lang="en" dir="ltr">
     <head>
         <title>Device Controller</title>
-        <meta charet="utf-8">
         <meta name="viewport" content="width=device-width, minimum-scale=0.1">
         <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-        <style>
-        .responsive {
-            width: 100%;
-            max-width: 400px;
-            height: auto;
-        }
-        .pointer {cursor: pointer;}
-        </style>
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"> -->
+       
     </head>
-    <body>
-        <div class="wrapper">
-            <section class="content">
+    <body style="margin: 0px; height: 100%">
+        <!-- <div class="wrapper"> -->
+            <!-- <section class="content"> -->
 
                 <!-- <div class="col-sm-10 col-md-6"> -->
-                    <div class="box box-success">
+                    <!-- <div class="box box-success">
 
                         <div style="text-align:center;">
                           <span id="ScreenCoordinates">(0, 0)</span>
-                        </div>
+                        </div> -->
                         <!-- <span class="finger finger-0" style="transform: translate3d(0, 0, 0)"></span>
                         <span class="finger finger-1"></span> -->
 
                         <!-- <input type="text" id="screenkeyboard" onkeypress="sendText()"> -->
 
                         
-                        <div id="frame" style="margin:0 auto;width:360px; " onPress(event) onmousemove="ScreenCoordinates(event)" onmouseout="clearCoor()">
-                            <!-- <canvas id="screen" style="border: 1px solid red;"  width="300" height="600"></canvas> -->
-                            <img id="screen" style="-webkit-user-select: none;margin: auto; cursor: pointer;" img style="-webkit-user-select: none;margin: auto;" src="http://127.0.0.1:9100/" width="375" height="667">
-                        </div>
+                        <!-- <div id="frame" style="margin:0 auto;width:360px; " onPress(event) onmousemove="ScreenCoordinates(event)" onmouseout="clearCoor()">
                     
-                        <div style="text-align:center;" class="btn-home">
-                            <!-- <span id="home" class="btn btn-success" onclick="home()">Home</span> -->
-                            <!-- <button src="uploads/home-button.png" id="home" type="button" onclick="home()">HOME</button> -->
+                            <img id="screen" style="-webkit-user-select: none;margin: auto; cursor: pointer;" img style="-webkit-user-select: none;margin: auto;" src="http://127.0.0.1:9100/" width="375" height="667">
+                        </div> -->
+                        <div style="z-index: 1;display: inline-block;">
+                            <div class="container" style="float: right;width:0px;">
+                                <img src="uploads/home-button.png" width="50" id="home" type="button" onclick="home()">
+                                <img src="uploads/volume-up.png" width="50" id="volumeup" type="button" onclick="volumeup()">
+                                <img src="uploads/volume-down.png" width="50" id="volumedown" type="button" onclick="volumedown()">
+                                <img src="uploads/lock-icon.png" width="50" id="lock" type="button" onclick="lock()">
+                                <img src="uploads/un-lock-icon.png" width="50" id="unlock" type="button" onclick="unlock()">
+                                <img src="uploads/Bell-prod-icon.png" width="50" id="bell-prod" type="button" onclick="startApp()">
+                            </div>
+                            
+                        <div class="container">
+                            <img id="screen" style="-webkit-user-select: none;margin: auto;" src="http://127.0.0.1:9100/" width="164" height="355">
+                        </div>
+                        <div class="container" style="width:0px;">
                             <img src="uploads/home-button.png" width="50" id="home" type="button" onclick="home()">
                             <img src="uploads/volume-up.png" width="50" id="volumeup" type="button" onclick="volumeup()">
                             <img src="uploads/volume-down.png" width="50" id="volumedown" type="button" onclick="volumedown()">
@@ -48,11 +50,11 @@
                             <img src="uploads/un-lock-icon.png" width="50" id="unlock" type="button" onclick="unlock()">
                             <img src="uploads/Bell-prod-icon.png" width="50" id="bell-prod" type="button" onclick="startApp()">
                         </div>
-
                     </div>
+                    <!-- </div> -->
                 <!-- </div> -->
-            </section>
-          </div>
+            <!-- </section>
+          </div> -->
 
         <script>
             // function myFunction() {

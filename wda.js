@@ -12,9 +12,9 @@ var MaxFailCount = 3
 
 var udid = "";
 var wdaPort = 8100
-var wdaRemotePort = 8200
+var wdaRemotePort = 8100
 var mjpegPort = 9100
-var wdaMjpegRemotePort = 9200
+var wdaMjpegRemotePort = 9100
 var baseUrl = util.format('http://127.0.0.1:%d',wdaPort)
 var plugin = new EventEmitter()
 var wdaPro = null;
@@ -35,24 +35,26 @@ plugin.on('restart',function(){
 
 var WDA = {
   start: async function(){
-    var type = 'device'
-    if(type=='device'){
+    //var type = 'device'
+    // if(type=='device'){
       proxyProMap.set(wdaPort,WDA.startIproxy(wdaPort,wdaRemotePort))
       proxyProMap.set(mjpegPort,WDA.startIproxy(mjpegPort,wdaMjpegRemotePort))
-    }
+    // }
     return WDA.startWda().then(function(){
       return WDA
     })
   }
+
   ,restartIproxy:function(localPort,remotePort){
     if (!exit){
       proxyPro = null;
       proxyProMap.set(localPort,WDA.startIproxy(localPort,remotePort));
     }
   }
+
   ,startIproxy:function(localPort,remotePort){
-    //console.log("start iproxy with params:%d %d %s",localPort,remotePort,udid)
-    let pro = new Subprocess("iproxy",["-s","0.0.0.0","-u",WDA.getDevices(),localPort,remotePort])
+    console.log("start iproxy with params:%d %d %s",localPort,remotePort,udid)
+    let pro = new Subprocess("iproxy",["-s","0.0.0.0","-u",udid,localPort,remotePort])
     // let pro = new Subprocess("iproxy",["-u",WDA.getDevices(),localPort,remotePort])
 
     pro.start();
@@ -65,12 +67,14 @@ var WDA = {
     });
     return pro
   }
-  ,getDevices:function(){
-    // console.log('get Devices')
-    const list = this.getiDeviceList;
-    console.log("list is :"+list);
-    udid = "00008101-001C15A20AD2001E";
-    return udid;
+  ,setDevice:function(id){
+    udid = id;
+    console.log('device : '+udid)
+    // const list = this.getiDeviceList;
+    // console.log("list is :"+list);
+    
+    //udid = "c96e4f4016966c6b50c39e1168f5535ee1988f40";
+    //return udid;
   }
   ,getbaseUrl:function(){
     console.log(baseUrl)
@@ -90,11 +94,11 @@ var WDA = {
     // if(options.type=='emulator'){
     //   platform = " Simulator"
     // }
-    var uninstall = new Subprocess("ideviceinstaller",["--udid",WDA.getDevices(),
+    var uninstall = new Subprocess("ideviceinstaller",["--udid",udid,
          "--uninstall","com.apple.test.WebDriverAgentRunner-Runner"])
     uninstall.start()
     var params = ['build-for-testing', 'test-without-building','-project',path.join(wdaPath,'WebDriverAgent.xcodeproj')
-                  ,'-scheme','WebDriverAgentRunner','-destination','id='+WDA.getDevices()+',platform=iOS'+platform
+                  ,'-scheme','WebDriverAgentRunner','-destination','id='+udid+',platform=iOS'+platform
                   ,'-configuration','Debug','IPHONEOS_DEPLOYMENT_TARGET=10.2']
     console.log("start WDA with params:%s",params);
     const env = {
@@ -321,7 +325,7 @@ var WDA = {
         plugin.end()
       }
       else{*/
-        WDA.startWda(WDA.getDevices());
+        WDA.startWda();
     }
   }
 

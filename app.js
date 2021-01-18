@@ -25,10 +25,10 @@ app.get('/config.js', (req, res) => {
 })
 
 //connected devices
-// var ideviceList = Wda.getiDeviceList();
-// console.log("ideviceList : "+ideviceList);
+var ideviceList = Wda.getiDeviceList();
+console.log("ideviceList : "+ideviceList[0]);
 
-Wda.setDevice("c96e4f4016966c6b50c39e1168f5535ee1988f40");
+Wda.setDevice(ideviceList[0]);
 // Wda.startWda();
 Wda.start();
 
@@ -46,7 +46,7 @@ wss.on('connection', function(socket) {
 
   // Receive data from the client
   socket.on('message', function(message) {
-    console.log('Received: ' + message);
+    //console.log('Received: ' + message);
 
     if (message.type === "Tap"){
 

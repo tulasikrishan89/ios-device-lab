@@ -97,8 +97,11 @@ var WDA = {
     var uninstall = new Subprocess("ideviceinstaller",["--udid",udid,
          "--uninstall","com.apple.test.WebDriverAgentRunner-Runner"])
     uninstall.start()
+    // var params = ['build-for-testing', 'test-without-building','-project',path.join(wdaPath,'WebDriverAgent.xcodeproj')
+    //               ,'-scheme','WebDriverAgentRunner','-destination','id='+udid+',platform=iOS'+platform
+    //               ,'-configuration','Debug','IPHONEOS_DEPLOYMENT_TARGET=10.2']
     var params = ['build-for-testing', 'test-without-building','-project',path.join(wdaPath,'WebDriverAgent.xcodeproj')
-                  ,'-scheme','WebDriverAgentRunner','-destination','id='+udid+',platform=iOS'+platform
+                  ,'-scheme','Controller','-destination','id='+udid+',platform=iOS'+platform
                   ,'-configuration','Debug','IPHONEOS_DEPLOYMENT_TARGET=10.2']
     console.log("start WDA with params:%s",params);
     const env = {

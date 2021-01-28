@@ -47,95 +47,57 @@
                                 <img src="uploads/Bell-prod-icon.png" width="50" id="bell-prod" type="button" onclick="startApp()">
                             </div> -->
                             
-                            <div class="container">
-                                <img id="screen" class="screen" style="-webkit-user-select: none;margin: auto; max-width: 100%; max-height:100%;height:absolute;width:auto" src="http://127.0.0.1:9100/" width="164" height="355">
+                            <div class="container" >
+                                <img id="screen" onclick="myclick(event)" class="screen" style="-webkit-user-select: none;margin: auto; max-width: 100%; max-height:100%;height:absolute;width:auto" src="http://127.0.0.1:9100/" width="164" height="355" onclick="click()">
                                 <!-- <canvas id="canvas"></canvas> -->
                             </div>
                         
                     </div>
 
+
         
-        <script>
+    <script>
 
-            // const socket = new WebSocket('ws://localhost:9090');
 
-            // socket.addEventListener('open', () => {
-            //     socket.send('Hello World!');
-            // });
-
-            // socket.addEventListener('message', event => {
-            // console.log(`Message from server: ${event.data}`);
-            // });
-
+        function myclick(e){
+            var x = Math.round((e.clientX));
+    	    var y = Math.round(e.clientY);
             
-            function setupWebSocket() {
-                var size = null;
-                //const PORT = process.env.PORT || 8080
-                var ws = new WebSocket("ws://localhost:"+9090);
+        }
 
-                ws.onopen = function () {
-                    console.log("connected");
-                }
 
-                return ws;
-            }
-            var ws = setupWebSocket();
+    </script>
 
-            ws.onopen = function() {
-                console.log('Opened connection 🎉');
+    <script>
 
-                // ws.addEventListener('message', function (event) {
-                //     this.size = event.data
-                //     console.log('Size : ', JSON.parse(event.data));
-                // });
+        function setupWebSocket() {
+            var size = null;
+            //const PORT = process.env.PORT || 8080
+            var ws = new WebSocket("ws://localhost:"+9090);
 
-                // ws.onmessage = e => {
-                //     console.log(JSON.parse(e.data))
-                //     this.size = JSON.parse(e.data)
-                //     //console.log("width : "+this.size.width)
-                //     //console.log("height : "+this.size.height)
-                //     if(this.size.width != null){
-                //         var img = document.getElementById('screen');
-                //         width = this.size.width;
-                //         height = this.size.height;
-
-                //         resizeImg(img, width, height)
-                //     }
-                // }
-
-                // send data to the server
-                var json = JSON.stringify({ message: 'Hello 👋 Mr.Server' });
-                ws.send(json);
+            ws.onopen = function () {
+                console.log("connected");
             }
 
-            // function resizeImg(img, width, height) {
-            //     img.width = width;
-            //     img.height = height;
-            // }
-        </script>
+            return ws;
+        }
+        var ws = setupWebSocket();
 
-<script>
-    // var canvas, ctx, $shot,$save,$imgs;
-    // var imgType = 'png', imgW = 414, imgH = 736, imgX = 0, imgY = 0;
-    // function init () {
-    //     canvas = document.getElementById('screen');
-    //     ctx = canvas.getContext('2d');
-    //     $shot = document.getElementById('shot');
-    //     $save = document.getElementById('save');
-    //     $imgs = document.getElementById('imgs');
-    //     bind();
-    // }
-    // function bind () {
-    //     $shot.onclick = function (e) {
-    //         $imgs.appendChild(Canvas2Image.convertToImage(canvas, imgW/3, imgH/3, imgType));
-    //     };
-    //     $save.onclick = function (e) {
-    //         var f = 'ShotSave';
-    //         Canvas2Image.saveAsImage(canvas, imgW, imgH, imgType, f);
-    //     }
-    // }
-    // onload = init;
-</script>
+        ws.onopen = function() {
+            console.log('Opened connection 🎉');
+
+            // send data to the server
+            var json = JSON.stringify({ message: 'Hello 👋 Mr.Server' });
+            ws.send(json);
+        }
+
+        // function resizeImg(img, width, height) {
+        //     img.width = width;
+        //     img.height = height;
+        // }
+    </script>
+
+
 
 <script>
     var WSURL2 = "ws://" + window.location.host + "/websocket2";
@@ -336,7 +298,6 @@
     }
 
     function volumeup() {
-
         axios.post(url+'/session/'+sessionId+'/wda/pressButton', {
             "name":"volumeUp"
         })
@@ -349,7 +310,6 @@
     }
 
     function lock() {
-
         axios({
             method: 'post',
             url: url+'/wda/lock',
@@ -359,7 +319,6 @@
     }
 
     function unlock() {
-
         axios({
             method: 'post',
             url: url+'/wda/unlock',
@@ -373,7 +332,7 @@
             "name":"volumeDown"
         })
         .then(function (response) {
-            // console.log(response);
+            return "Success";
         })
         .catch(function (error) {
             console.log(error);
@@ -385,7 +344,7 @@
             "bundleId":"ca.bell.selfserve.mybellmobile"
         })
         .then(function (response) {
-            // console.log(response);
+            return "Success";
         })
         .catch(function (error) {
             console.log(error);
@@ -398,31 +357,24 @@
         var text = '';
         if (event.key === "Backspace") {
             text = "\b";
-        // }else if (event.shiftKey | event.ctrlKey | event.key === "Enter" | event.key === "CapsLock" | event.key === "tab") {
-        //     text = '';
         }else if(event.key === " "){
             text = ' ';
         }else{
             var tempText = event.key
             if (event.shiftKey) {
                 tempText = event.key.replace("Shift", "")
-            }else if (event.ctrlKey) {
-                tempText = event.key.replace("Control", "")
-            }else if (event.key === "Enter" ) {
-                tempText = event.key.replace("Enter", "")
-            }else if (event.key === "Tab" | event.key === "CapsLock" | event.key === "tab") {
+            }
+            else if (event.ctrlKey | event.key === "Enter" | event.key === "Tab" | event.key === "CapsLock") {
                 tempText = event.key.replace(event.key, "")
             }
-            text = encodeURI(encodeURI(tempText));
+            text = tempText;//encodeURI(tempText);
         }
-        // console.log("'"+event.key+"'");
         axios.post(url+'/session/'+sessionId+'/wda/keys', {
             "value":[text],
             "frequency":60
         })
         .then(function (response) {
-            // console.log(response);
-            // document.getElementById('screenkeyboard').value = '';
+            return "Success";
         })
         .catch(function (error) {
             console.log(error);
@@ -433,6 +385,8 @@
 
 
 <script>
+
+    
     var app = new Vue({
         el: "#screen",
         // delimiters: ["[[", "]]"],
@@ -493,8 +447,15 @@
             }.bind(this);
         },
         methods: {
+            home: function () {
+                axios({
+                    method: 'post',
+                    url: url+'/wda/homescreen',
+                    data: {
+                    }
+                });
+            },
             tap: function (x, y) {
-            	// console.log("tap func");
                 var self = this;
 
                 axios.post(url+'/session/'+sessionId+'/wda/tap/0', {
@@ -502,7 +463,6 @@
                     "y": y
                 })
                 .then(function (response) {
-                    // console.log("Success : "+response);
                     return "Success";
                 })
                 .catch(function (error) {
@@ -521,7 +481,6 @@
                     "duration":duration
                 })
                 .then(function (response) {
-                    // console.log("Success : "+response);
                     return "Success";
                 })
                 .catch(function (error) {
@@ -540,19 +499,11 @@
                     "duration":0.08
                 })
                 .then(function (response) {
-                    // console.log(response);
+                    return "Success";
                 })
                 .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            home: function () {
-
-                axios({
-                    method: 'post',
-                    url: url+'/wda/homescreen',
-                    data: {
-                    }
+                    console.log("swipe Error : "+error);
+                    return "Fail"
                 });
             },
             sendText: function (text) {
@@ -563,10 +514,11 @@
                     "frequency":60
                 })
                 .then(function (response) {
-                    // console.log(response);
+                    return "Success";
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.log("swipe Error : "+error);
+                    return "Fail"
                 });
 
             },
@@ -577,12 +529,9 @@
                 // var url = 'http://192.168.0.71:8100';
                 axios.get(url+'/status')
                     .then(function (response) {
-                        // handle success
-                        // console.log(response);
-
                         this.sessionId = response.data.sessionId;
                         // Object.assign(this.device, response.data.value.ios);
-
+                        console.log("initSession : "+sessionId)
                         if(response.data.sessionId==null)
                             return;
 
@@ -596,6 +545,7 @@
                         .then(function (response) {
                             console.log(response);
                             this.sessionId = response.data.sessionId;
+                            return "Success";
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -614,25 +564,19 @@
             initScreenSize: function () {
                 axios.get(url+'/status')
                     .then(function (response) {
-                        // handle success
-                        // console.log(response);
-
+        
                         this.sessionId = response.data.sessionId;
-                        // Object.assign(this.device, response.data.value.ios);
 
                         axios.get(url+'/session/' + sessionId + '/window/size')
                             .then(function (response) {
-                                // console.log(response);
-                                // this.display.width = response.data.value.width;
-                                // this.display.height = response.data.value.height;
                                 var img = document.getElementById('screen');
                                 img.width = response.data.value.width;
                                 img.height = response.data.value.height;
+                                return "Success";
                             })
                             .catch(function (error) {
                                 console.log(error);
                             });
-
                     })
                     .catch(function (error) {
                         // handle error
@@ -689,7 +633,7 @@
                         pageX: x,
                         pageY: y,
                     }
-                    console.log("convertPosition : "+convert.x+" : "+convert.y);
+                    // console.log("convertPosition : "+convert.x+" : "+convert.y);
                     return convert;
                 }
                 function stopMousing() {
@@ -716,7 +660,7 @@
                             // console.log("LongTap", first);
                             defer = self.tapHold(first.x, first.y, holdTime)
                         } else {
-                            console.log("Tap", first);
+                            //console.log("Tap", first);
                             defer = self.tap(first.x, first.y)
                         }
                     }

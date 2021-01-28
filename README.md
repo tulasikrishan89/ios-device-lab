@@ -6,8 +6,8 @@
 1. npm install
 
 ## Running
-1. Start the app.js
+2. Start the app.js
 ```
-PORT=8080 node app.js
+node app.js
 ```
-2. Open http://localhost:8080 in your browser.
+3. Open http://localhost:9090 in your browser.

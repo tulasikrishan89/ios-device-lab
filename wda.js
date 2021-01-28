@@ -53,7 +53,7 @@ var WDA = {
   }
 
   ,startIproxy:function(localPort,remotePort){
-    console.log("start iproxy with params:%d %d %s",localPort,remotePort,udid)
+    //console.log("start iproxy with params:%d %d %s",localPort,remotePort,udid)
     let pro = new Subprocess("iproxy",["-s","0.0.0.0","-u",udid,localPort,remotePort])
     // let pro = new Subprocess("iproxy",["-u",WDA.getDevices(),localPort,remotePort])
 
@@ -69,15 +69,9 @@ var WDA = {
   }
   ,setDevice:function(id){
     udid = id;
-    console.log('device : '+udid)
-    // const list = this.getiDeviceList;
-    // console.log("list is :"+list);
-    
-    //udid = "c96e4f4016966c6b50c39e1168f5535ee1988f40";
-    //return udid;
   }
   ,getbaseUrl:function(){
-    console.log(baseUrl)
+    //console.log(baseUrl)
     return baseUrl;
   }
   ,startWda:function(){
@@ -103,7 +97,7 @@ var WDA = {
     var params = ['build-for-testing', 'test-without-building','-project',path.join(wdaPath,'WebDriverAgent.xcodeproj')
                   ,'-scheme','Controller','-destination','id='+udid+',platform=iOS'+platform
                   ,'-configuration','Debug','IPHONEOS_DEPLOYMENT_TARGET=10.2']
-    console.log("start WDA with params:%s",params);
+    //console.log("start WDA with params:%s",params);
     const env = {
       USE_PORT: 8100,
       MJPEG_SERVER_PORT:9100
@@ -125,20 +119,21 @@ var WDA = {
         bRestart = false
         // console.log(line)
 
-        if(line.includes('ServerURLHere')){
-          console.log(line)
-          // baseUrl = line.replace("ServerURLHere->", "");
-          // baseUrl = baseUrl.replace("<-ServerURLHere", "");
-          // console.log("baseUrl : "+baseUrl);
-        }
+        // if(line.includes('ServerURLHere')){
+        //   console.log(line)
+        //   // baseUrl = line.replace("ServerURLHere->", "");
+        //   // baseUrl = baseUrl.replace("<-ServerURLHere", "");
+        //   // console.log("baseUrl : "+baseUrl);
+        // }
 
         // if (line.indexOf('=========')!=-1)
           // console.log(line)
-        if(line.indexOf("** TEST BUILD SUCCEEDED **")!=-1)
-          console.log("xcodebuild build successfully")
-        else if (line.indexOf("ServerURLHere->")!=-1){
+        // if(line.indexOf("** TEST BUILD SUCCEEDED **")!=-1)
+        //   console.log("xcodebuild build successfully")
+        // else 
+        if (line.indexOf("ServerURLHere->")!=-1){
           // console.log(line)
-          console.log("WDA started successfully")
+          // console.log("WDA started successfully")
           WDA.launchApp('com.apple.Preferences');
           WDA.initSession();
           plugin.emit("started");
@@ -304,7 +299,6 @@ var WDA = {
           WDA.launchApp('com.apple.Preferences')
           WDA.initSession()
         }
-
         console.log("initSession : "+sessionid)
         return sessionid
     }).catch(function(err){

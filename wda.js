@@ -12,9 +12,9 @@ var MaxFailCount = 3
 
 var udid = "";
 var wdaPort = 8100
-var wdaRemotePort = 8200
+var wdaRemotePort = 8100
 var mjpegPort = 9100
-var wdaMjpegRemotePort = 9200
+var wdaMjpegRemotePort = 9100
 var baseUrl = util.format('http://127.0.0.1:%d',wdaPort)
 var plugin = new EventEmitter()
 var wdaPro = null;
@@ -35,42 +35,43 @@ plugin.on('restart',function(){
 
 var WDA = {
   start: async function(){
-    
-
-    // var type = 'device'
+    //var type = 'device'
     // if(type=='device'){
-    //   proxyProMap.set(wdaPort,WDA.startIproxy(wdaPort,wdaRemotePort))
-    //   proxyProMap.set(mjpegPort,WDA.startIproxy(mjpegPort,wdaMjpegRemotePort))
+      proxyProMap.set(wdaPort,WDA.startIproxy(wdaPort,wdaRemotePort))
+      proxyProMap.set(mjpegPort,WDA.startIproxy(mjpegPort,wdaMjpegRemotePort))
     // }
     return WDA.startWda().then(function(){
       return WDA
     })
   }
+
   ,restartIproxy:function(localPort,remotePort){
     if (!exit){
       proxyPro = null;
       proxyProMap.set(localPort,WDA.startIproxy(localPort,remotePort));
     }
   }
+
   ,startIproxy:function(localPort,remotePort){
     //console.log("start iproxy with params:%d %d %s",localPort,remotePort,udid)
-    let pro = new Subprocess("iproxy",["-s","0.0.0.0","-u",WDA.getDevices(),localPort,remotePort])
+    let pro = new Subprocess("iproxy",["-s","0.0.0.0","-u",udid,localPort,remotePort])
+    // let pro = new Subprocess("iproxy",["-u",WDA.getDevices(),localPort,remotePort])
+
     pro.start();
-    pro.on("exit",(code,signal)=>{
-      console.log("exit with code :%d",code)
-      WDA.restartIproxy(localPort,remotePort);
-    });
+    // pro.on("exit",(code,signal)=>{
+    //   console.log("exit with code :%d",code)
+    //   WDA.restartIproxy(localPort,remotePort);
+    // });
     pro.on("output",(stdout,stderr)=>{
+
     });
     return pro
   }
-  ,getDevices:function(){
-    // console.log('get Devices')
-    udid = "00008030-001A550A2643802E";
-    return udid;
+  ,setDevice:function(id){
+    udid = id;
   }
   ,getbaseUrl:function(){
-    console.log(baseUrl)
+    //console.log(baseUrl)
     return baseUrl;
   }
   ,startWda:function(){
@@ -87,13 +88,16 @@ var WDA = {
     // if(options.type=='emulator'){
     //   platform = " Simulator"
     // }
-    var uninstall = new Subprocess("ideviceinstaller",["--udid",WDA.getDevices(),
+    var uninstall = new Subprocess("ideviceinstaller",["--udid",udid,
          "--uninstall","com.apple.test.WebDriverAgentRunner-Runner"])
     uninstall.start()
+    // var params = ['build-for-testing', 'test-without-building','-project',path.join(wdaPath,'WebDriverAgent.xcodeproj')
+    //               ,'-scheme','WebDriverAgentRunner','-destination','id='+udid+',platform=iOS'+platform
+    //               ,'-configuration','Debug','IPHONEOS_DEPLOYMENT_TARGET=10.2']
     var params = ['build-for-testing', 'test-without-building','-project',path.join(wdaPath,'WebDriverAgent.xcodeproj')
-                  ,'-scheme','WebDriverAgentRunner','-destination','id='+WDA.getDevices()+',platform=iOS'+platform
+                  ,'-scheme','Controller','-destination','id='+udid+',platform=iOS'+platform
                   ,'-configuration','Debug','IPHONEOS_DEPLOYMENT_TARGET=10.2']
-    console.log("start WDA with params:%s",params);
+    //console.log("start WDA with params:%s",params);
     const env = {
       USE_PORT: 8100,
       MJPEG_SERVER_PORT:9100
@@ -115,20 +119,21 @@ var WDA = {
         bRestart = false
         // console.log(line)
 
-        if(line.includes('ServerURLHere')){
-          // console.log(line)
-          baseUrl = line.replace("ServerURLHere->", "");
-          baseUrl = baseUrl.replace("<-ServerURLHere", "");
-          console.log("baseUrl : "+baseUrl);
-        }
+        // if(line.includes('ServerURLHere')){
+        //   console.log(line)
+        //   // baseUrl = line.replace("ServerURLHere->", "");
+        //   // baseUrl = baseUrl.replace("<-ServerURLHere", "");
+        //   // console.log("baseUrl : "+baseUrl);
+        // }
 
         // if (line.indexOf('=========')!=-1)
           // console.log(line)
-        if(line.indexOf("** TEST BUILD SUCCEEDED **")!=-1)
-          console.log("xcodebuild build successfully")
-        else if (line.indexOf("ServerURLHere->")!=-1){
+        // if(line.indexOf("** TEST BUILD SUCCEEDED **")!=-1)
+        //   console.log("xcodebuild build successfully")
+        // else 
+        if (line.indexOf("ServerURLHere->")!=-1){
           // console.log(line)
-          console.log("WDA started successfully")
+          // console.log("WDA started successfully")
           WDA.launchApp('com.apple.Preferences');
           WDA.initSession();
           plugin.emit("started");
@@ -137,7 +142,7 @@ var WDA = {
           if(checkTimer===null){
             batteryTimer = setInterval(WDA.getBatteryInfo,300000)
             checkTimer = setInterval(WDA.checkWdaStatus,3000)
-            
+
           }
           return resolve()
         }
@@ -192,7 +197,7 @@ var WDA = {
 
   ,GetRequest:function(uri,param='',bWithSession=false){
     var session = ''
-    
+
     if(bWithSession)
       session = util.format("/session/%s",WDA.getSessionid())
     let options = {
@@ -294,7 +299,6 @@ var WDA = {
           WDA.launchApp('com.apple.Preferences')
           WDA.initSession()
         }
-
         console.log("initSession : "+sessionid)
         return sessionid
     }).catch(function(err){
@@ -318,106 +322,9 @@ var WDA = {
         plugin.end()
       }
       else{*/
-        WDA.startWda(WDA.getDevices());
+        WDA.startWda();
     }
   }
-
-  // ,getSize:function(){
-
-  //   if(WDA.getSessionid()== null){
-  //     WDA.initSession();
-  //   }
-
-  //   var uri = 'window/size'
-  //   var param = ''
-  //   var session = ''
-  //   var bWithSession=true
-    
-  //   if(bWithSession)
-  //     session = util.format("/session/%s",WDA.getSessionid())
-  //   let options = {
-  //     method:'GET',
-  //     uri:util.format("%s%s/%s%s",baseUrl,session,uri,param),
-  //     json:true,
-  //     headers:{
-  //         'Content-Type':'application/json'
-  //     }
-  //   }
-  //   console.log(options);
-
-  //   return requestPromise(options).then(function(resp){
-  //     //   console.log("size width : "+resp.value.width)
-  //     //   console.log("size height : "+resp.value.height)
-  //     // sessionId = resp.sessionId
-  //     return resp.value
-  //   }).catch(function(err){
-  //       // console.log('get request err',err)
-  //     return null
-  //   })
-  // }
-
-  // ,click:function(x,y,duration){
-  //   var body = {
-  //     x:x,
-  //     y:y,
-  //     duration:duration
-  //   }
-  //   WDA.PostData('wda/tap_stf',body,false)
-  // }
-
-  // ,swipe:function(swipeList,duration){
-  //   var actions = [
-  //     {
-  //       action:"press",
-  //       options:{
-  //           x:swipeList[0].x,
-  //           y:swipeList[0].y
-  //       }
-  //     }
-  //   ]
-  //   var time = duration
-  //   if(swipeList.length>2){
-  //     time = 50
-  //   }
-  //   for(i=1;i<swipeList.length;i++){
-  //     actions.push(
-  //       {
-  //         action:"wait",
-  //         options:{
-  //             ms:swipeList[i].t
-  //         }
-  //       }
-  //     )
-  //     actions.push(
-  //       {
-  //         action:"moveTo",
-  //         options:{
-  //             x:swipeList[i].x,
-  //             y:swipeList[i].y
-  //         }
-  //       }
-  //     )
-  //   }
-  //   actions.push({
-  //     action:"release",
-  //     options:{}
-  //   })
-  //   var body = {
-  //     actions:actions
-  //   }
-  //   WDA.PostData('touch/perform_stf',body,false)
-  // }
-
-  // ,drag:function(startx,starty,endx,endy,duration){
-  //   var body = {
-  //     fromX:Math.floor(startx),
-  //     fromY:Math.floor(starty),
-  //     toX:Math.floor(endx),
-  //     toY:Math.floor(endy),
-  //     duration:duration
-  //   }
-  //   WDA.PostData('wda/dragfromtoforduration_stf',body,false)
-  // }
 
 }
 module.exports = WDA;

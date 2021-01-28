@@ -1,128 +1,103 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" style="height: 100%;">
     <head>
         <title>Device Controller</title>
-        <meta charet="utf-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=0.1">
         <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"> -->
+       <style>
+           
+            .screen{
+                cursor: pointer !important;
+                
+            
+           }
+       </style>
     </head>
-    <body>
-        <div class="wrapper">
-            <section class="content">
-    
-                <!-- <div class="col-sm-10 col-md-6"> -->
-                    <div class="box box-success">
-    
+    <body style="margin: 0px; height: 100%">
+       
+                    <!-- <div class="box box-success">
+
                         <div style="text-align:center;">
                           <span id="ScreenCoordinates">(0, 0)</span>
-                        </div>
+                        </div> -->
                         <!-- <span class="finger finger-0" style="transform: translate3d(0, 0, 0)"></span>
                         <span class="finger finger-1"></span> -->
 
                         <!-- <input type="text" id="screenkeyboard" onkeypress="sendText()"> -->
 
-
-                        <div id="frame" style="margin:0 auto;width:360px;" onPress(event) onmousemove="ScreenCoordinates(event)" onmouseout="clearCoor()">
-                            <!-- <canvas id="screen" style="border: 1px solid red;"  width="300" height="600"></canvas> -->
-                            <img id="screen" style="-webkit-user-select: none;margin: auto;" src="http://192.168.0.71:9100/" width="375" height="667">
-                        </div>
-                        <div style="text-align:center;" class="btn-home">
-                            <!-- <span id="home" class="btn btn-success" onclick="home()">Home</span> -->
-                            <button  id="home" type="button" onclick="home()">HOME</button>
-                        </div>
-    
+                        
+                        <!-- <div id="frame" style="margin:0 auto;width:360px; " onPress(event) onmousemove="ScreenCoordinates(event)" onmouseout="clearCoor()">
+                    
+                            <img id="screen" style="-webkit-user-select: none;margin: auto; cursor: pointer;" img style="-webkit-user-select: none;margin: auto;" src="http://127.0.0.1:9100/" width="375" height="667">
+                        </div> -->
+                        <div style="z-index: 1;display: inline-block;">
+                            <div class="container" style="float: right;width:0px;">
+                                <img src="uploads/home-button.png" width="50" id="home" type="button" onclick="home()">
+                                <img src="uploads/volume-up.png" width="50" id="volumeup" type="button" onclick="volumeup()">
+                                <img src="uploads/volume-down.png" width="50" id="volumedown" type="button" onclick="volumedown()">
+                                <img src="uploads/lock-icon.png" width="50" id="lock" type="button" onclick="lock()">
+                                <img src="uploads/un-lock-icon.png" width="50" id="unlock" type="button" onclick="unlock()">
+                                <img src="uploads/Bell-prod-icon.png" width="50" id="bell-prod" type="button" onclick="startApp()">
+                            </div>
+                            <!-- <div class="container" style="float: right;width:0px;">
+                               
+                                <img src="uploads/Bell-prod-icon.png" width="50" id="bell-prod" type="button" onclick="startApp()">
+                            </div> -->
+                            
+                            <div class="container" >
+                                <img id="screen" onclick="myclick(event)" class="screen" style="-webkit-user-select: none;margin: auto; max-width: 100%; max-height:100%;height:absolute;width:auto" src="http://127.0.0.1:9100/" width="164" height="355" onclick="click()">
+                                <!-- <canvas id="canvas"></canvas> -->
+                            </div>
+                        
                     </div>
-                <!-- </div> -->
-            </section>
-          </div>
 
-        <script>
-            // function myFunction() {
-            //     alert("You pressed a key inside the input field");
-            // }
 
-        </script>
-        <script>
+        
+    <script>
 
-            // const socket = new WebSocket('ws://localhost:9090');
+
+        function myclick(e){
+            var x = Math.round((e.clientX));
+    	    var y = Math.round(e.clientY);
             
-            // socket.addEventListener('open', () => {
-            //     socket.send('Hello World!');
-            // });
-            
-            // socket.addEventListener('message', event => {
-            // console.log(`Message from server: ${event.data}`);
-            // });
-            
-            function setupWebSocket() {
-                var size = null;
-                //const PORT = process.env.PORT || 8080
-                var ws = new WebSocket("ws://localhost:"+9090);
+        }
 
-                ws.onopen = function () {
-                    console.log("connected");
-                }
 
-                return ws;
-            }
-            var ws = setupWebSocket();
+    </script>
 
-            ws.onopen = function() {
-                console.log('Opened connection 🎉');
+    <script>
 
-                // ws.addEventListener('message', function (event) {
-                //     this.size = event.data
-                //     console.log('Size : ', JSON.parse(event.data));
-                // });
+        function setupWebSocket() {
+            var size = null;
+            //const PORT = process.env.PORT || 8080
+            var ws = new WebSocket("ws://localhost:"+9090);
 
-                // ws.onmessage = e => {
-                //     console.log(JSON.parse(e.data))
-                //     this.size = JSON.parse(e.data)
-                //     //console.log("width : "+this.size.width)
-                //     //console.log("height : "+this.size.height)
-                //     if(this.size.width != null){
-                //         var img = document.getElementById('screen');
-                //         width = this.size.width;
-                //         height = this.size.height;
-
-                //         resizeImg(img, width, height)
-                //     }
-                // }
-
-                // send data to the server
-                var json = JSON.stringify({ message: 'Hello 👋 Mr.Server' });
-                ws.send(json);
+            ws.onopen = function () {
+                console.log("connected");
             }
 
-            function resizeImg(img, width, height) {
-                img.width = width;
-                img.height = height;
-            }
-        </script>
+            return ws;
+        }
+        var ws = setupWebSocket();
 
-<script>
-    // var canvas, ctx, $shot,$save,$imgs;
-    // var imgType = 'png', imgW = 414, imgH = 736, imgX = 0, imgY = 0;
-    // function init () {
-    //     canvas = document.getElementById('screen');
-    //     ctx = canvas.getContext('2d');
-    //     $shot = document.getElementById('shot');
-    //     $save = document.getElementById('save');
-    //     $imgs = document.getElementById('imgs');
-    //     bind();
-    // }
-    // function bind () {
-    //     $shot.onclick = function (e) {
-    //         $imgs.appendChild(Canvas2Image.convertToImage(canvas, imgW/3, imgH/3, imgType));
-    //     };
-    //     $save.onclick = function (e) {
-    //         var f = 'ShotSave';
-    //         Canvas2Image.saveAsImage(canvas, imgW, imgH, imgType, f);
-    //     }
-    // }
-    // onload = init;
-</script>
+        ws.onopen = function() {
+            console.log('Opened connection 🎉');
+
+            // send data to the server
+            var json = JSON.stringify({ message: 'Hello 👋 Mr.Server' });
+            ws.send(json);
+        }
+
+        // function resizeImg(img, width, height) {
+        //     img.width = width;
+        //     img.height = height;
+        // }
+    </script>
+
+
 
 <script>
     var WSURL2 = "ws://" + window.location.host + "/websocket2";
@@ -301,101 +276,117 @@
     //         document.getElementById('getlogbtn').textContent = "Start log scraping"
     //     }
     // }
-
+    var url = 'http://127.0.0.1:8100';
     function home() {
-        // $.ajax({
-        //     url: "/ios/home",
-        //     method: "GET",
-        // })
-        // .then(function (ret) {
-        //     console.log(ret);
-        // })
 
-        var url = 'http://192.168.0.71:8100';
+        // axios({
+        //     method: 'post',
+        //     url: url+'/wda/homescreen',
+        //     data: {
+        //     }
+        // });
+
+        axios.post(url+'/session/'+sessionId+'/wda/pressButton', {
+            "name":"home"
+        })
+        .then(function (response) {
+            // console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    function volumeup() {
+        axios.post(url+'/session/'+sessionId+'/wda/pressButton', {
+            "name":"volumeUp"
+        })
+        .then(function (response) {
+            // console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    function lock() {
         axios({
             method: 'post',
-            url: url+'/wda/homescreen',
+            url: url+'/wda/lock',
             data: {
             }
         });
     }
-    // function launchApp() {
-    //     var id = document.getElementById('bundleid').value
-    //     if (id != "") {
-    //         $.ajax({
-    //             url: "/ios/launchapp?id=" + id,
-    //             method: "GET",
-    //         })
-    //             .then(function (ret) {
-    //                 console.log(ret);
-    //             })
-    //     }
-    // }
-    // function uninstallApp() {
-    //     var id = document.getElementById('uninstallid').value
-    //     if (id != "") {
-    //         $.ajax({
-    //             url: "/ios/uninstall?id=" + id,
-    //             method: "GET",
-    //         })
-    //             .then(function (ret) {
-    //                 console.log(ret);
-    //             })
-    //     }
-    // }
-    // function getDeviceInfo() {
-    //     var udid = "";
-    //     $.ajax({
-    //         url: "/ios/getDeviceInfo?",
-    //         method: "GET",
-    //     })
-    //         .then(function (ret) {
-    //             udid = ret.udid
-    //             console.log(udid)
-    //         })
-    // }
-    
+
+    function unlock() {
+        axios({
+            method: 'post',
+            url: url+'/wda/unlock',
+            data: {
+            }
+        });
+    }
+
+    function volumedown() {
+        axios.post(url+'/session/'+sessionId+'/wda/pressButton', {
+            "name":"volumeDown"
+        })
+        .then(function (response) {
+            return "Success";
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    function startApp() {
+        axios.post(url+'/session/'+sessionId+'/wda/apps/activate', {
+            "bundleId":"ca.bell.selfserve.mybellmobile"
+        })
+        .then(function (response) {
+            return "Success";
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
 
     document.addEventListener("keydown", function onPress(event) {//keypress keydown
         //event.keyCode;//event.key;
+        console.log(event);
         var text = '';
         if (event.key === "Backspace") {
             text = "\b";
-        }else if (event.shiftKey | event.ctrlKey | event.key === "Enter" | event.key === "CapsLock" | event.key === "tab") {
-            text = '';
         }else if(event.key === " "){
             text = ' ';
         }else{
-            text = encodeURI(encodeURI(event.key));
+            var tempText = event.key
+            if (event.shiftKey) {
+                tempText = event.key.replace("Shift", "")
+            }
+            else if (event.ctrlKey | event.key === "Enter" | event.key === "Tab" | event.key === "CapsLock") {
+                tempText = event.key.replace(event.key, "")
+            }
+            text = tempText;//encodeURI(tempText);
         }
-        // console.log("'"+event.key+"'");
-        var url = 'http://192.168.0.71:8100';
         axios.post(url+'/session/'+sessionId+'/wda/keys', {
             "value":[text],
             "frequency":60
         })
         .then(function (response) {
-            // console.log(response);
-            // document.getElementById('screenkeyboard').value = '';
+            return "Success";
         })
         .catch(function (error) {
             console.log(error);
         });
 
     });
-    // function clearText() {
-    //     $.ajax({
-    //         url: "/ios/clear",
-    //         method: "GET",
-    //     })
-    //         .then(function (ret) {
-    //             console.log(ret);
-    //         })
-    // }
 </script>
 
 
 <script>
+
+    
     var app = new Vue({
         el: "#screen",
         // delimiters: ["[[", "]]"],
@@ -408,6 +399,7 @@
             },
             refreshCount: 0,
             sessionId: null,
+            url: 'http://127.0.0.1:8100',
             pageHidden: false,
             current: 0,
             inputText: '',
@@ -438,6 +430,7 @@
         mounted: function () {
             var self = this;
             this.initTouchListener();
+            //this.initSession();
             this.initScreenSize();
             // this.home();
             var self = this;
@@ -447,35 +440,29 @@
                 if (nw && nh && self.display.naturalHeight != nh) {
                     self.display.naturalWidth = nw;
                     self.display.naturalHeight = nh;
+                    // self.initSession();
                     self.initScreenSize();
                     // console.log("Detect screen rotate");
                 }
             }.bind(this);
         },
         methods: {
+            home: function () {
+                axios({
+                    method: 'post',
+                    url: url+'/wda/homescreen',
+                    data: {
+                    }
+                });
+            },
             tap: function (x, y) {
-            	// console.log("tap func");
                 var self = this;
-                // return $.ajax({
-                //     url: "/ios/tap/?x=" + x + "&y=" + y,
-                //     method: "GET"
-                // }).then(function (ret) {
-                //     if (ret.status !== 0) {
-                //         console.log("tap fail"+ret.value);
-                //         return "Fail"
-                //     } else {
-                //     	console.log("tap success"+ret.value);
-                //         return "Success";
-                //     }
-                // })
 
-                var url = 'http://192.168.0.71:8100';
                 axios.post(url+'/session/'+sessionId+'/wda/tap/0', {
                     "x": x,
                     "y": y
                 })
                 .then(function (response) {
-                    // console.log("Success : "+response);
                     return "Success";
                 })
                 .catch(function (error) {
@@ -487,25 +474,13 @@
             tapHold: function (x, y, duration) {
                 var self = this;
                 duration = duration / 1000
-                // return $.ajax({
-                //     url: "/ios/tapHold?x=" + x + "&y=" + y + "&duration=" + duration,
-                //     method: "GET"
-                // }).then(function (ret) {
-                //     if (ret.status !== 0) {
-                //         console.log(ret.value);
-                //     } else {
-                //         return "Success";
-                //     }
-                // })
 
-                var url = 'http://192.168.0.71:8100';
                 axios.post(url+'/session/'+sessionId+'/wda/touchAndHold', {
                     "x":x,
                     "y":y,
                     "duration":duration
                 })
                 .then(function (response) {
-                    // console.log("Success : "+response);
                     return "Success";
                 })
                 .catch(function (error) {
@@ -515,12 +490,7 @@
             },
             swipe: function (fromX, fromY, toX, toY) {
                 var self = this;
-                // return $.ajax({
-                //     url: "/ios/swipe?fromX=" + fromX + "&fromY=" + fromY + "&toX=" + toX + "&toY=" + toY + "&duration=" + 0.08,
-                //     method: "GET"
-                // })
 
-                var url = 'http://192.168.0.71:8100';
                 axios.post(url+'/session/'+sessionId+'/wda/dragfromtoforduration', {
                     "fromX":fromX,
                     "fromY":fromY,
@@ -529,92 +499,84 @@
                     "duration":0.08
                 })
                 .then(function (response) {
-                    // console.log(response);
+                    return "Success";
                 })
                 .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            home: function () {
-                // return $.ajax({
-                //     url: "/ios/homeScreen",
-                //     method: "GET"
-                // }).then(function (ret) {
-                //     console.log(ret);
-                // })
-
-                var url = 'http://192.168.0.71:8100';
-                axios({
-                    method: 'post',
-                    url: url+'/wda/homescreen',
-                    data: {
-                    }
+                    console.log("swipe Error : "+error);
+                    return "Fail"
                 });
             },
             sendText: function (text) {
-                // inputText = document.getElementById('input').value
 
-                // return $.ajax({
-                //     url: "/ios/inputText?value=" + inputText,
-                //     method: "GET"
-                // }).then(function (ret) {
-                //     console.log(ret);
-                // })
-
-                var url = 'http://192.168.0.71:8100';
+                // var url = 'http://192.168.0.71:8100';
                 axios.post(url+'/session/'+sessionId+'/wda/keys', {
                     "value":[text],
                     "frequency":60
                 })
                 .then(function (response) {
-                    // console.log(response);
+                    return "Success";
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.log("swipe Error : "+error);
+                    return "Fail"
                 });
 
             },
             clearText: function (n) {
                 this.sendText("\b".repeat(n || 30))
             },
-            initScreenSize: function () {
-                // $.ajax({
-                //     url: "/status",
-                // })
-                // .then(function (ret) {
-                //     this.sessionId = ret.sessionId;
-                //     Object.assign(this.device, ret.value.device);
-                //     return $.ajax({
-                //         url: "/session/" + ret.sessionId + "/window/size",
-                //     })
-                // }.bind(this))
-                // .then(function (ret) {
-                //     this.display.width = ret.value.width;
-                //     this.display.height = ret.value.height;
-                // }.bind(this))
-                
-                var url = 'http://192.168.0.71:8100';
+            initSession: function () {
+                // var url = 'http://192.168.0.71:8100';
                 axios.get(url+'/status')
                     .then(function (response) {
-                        // handle success
-                        // console.log(response);
-
                         this.sessionId = response.data.sessionId;
                         // Object.assign(this.device, response.data.value.ios);
+                        console.log("initSession : "+sessionId)
+                        if(response.data.sessionId==null)
+                            return;
+
+                        axios.post(url+'/session', {
+                                "capabilities":{
+                                "bundleId": "com.apple.Preferences",
+                                "autoLaunch": false,
+                                "waitForQuiescence": false
+                            }
+                        })
+                        .then(function (response) {
+                            console.log(response);
+                            this.sessionId = response.data.sessionId;
+                            return "Success";
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+
+            },
+            initScreenSize: function () {
+                axios.get(url+'/status')
+                    .then(function (response) {
+        
+                        this.sessionId = response.data.sessionId;
 
                         axios.get(url+'/session/' + sessionId + '/window/size')
                             .then(function (response) {
-                                // console.log(response);
-                                // this.display.width = response.data.value.width;
-                                // this.display.height = response.data.value.height;
                                 var img = document.getElementById('screen');
                                 img.width = response.data.value.width;
                                 img.height = response.data.value.height;
+                                return "Success";
                             })
                             .catch(function (error) {
                                 console.log(error);
                             });
-
                     })
                     .catch(function (error) {
                         // handle error
@@ -661,7 +623,7 @@
                     }
                     e.preventDefault()
 //                    calculateBounds()
-                    var x = e.offsetX //+ 30
+                    var x = e.offsetX
                     var y = e.offsetY
                     // console.log("convertPosition x: " + x + ", convertPosition y: " + e.offsetY)
                     var convert =  {
@@ -671,7 +633,7 @@
                         pageX: x,
                         pageY: y,
                     }
-                    // console.log(convert);
+                    // console.log("convertPosition : "+convert.x+" : "+convert.y);
                     return convert;
                 }
                 function stopMousing() {
@@ -698,7 +660,7 @@
                             // console.log("LongTap", first);
                             defer = self.tapHold(first.x, first.y, holdTime)
                         } else {
-                            // console.log("Tap", first);
+                            //console.log("Tap", first);
                             defer = self.tap(first.x, first.y)
                         }
                     }
@@ -719,7 +681,7 @@
                             x: p.x,
                             y: p.y
                         };
-                        console.log("in mouseMoveListener printing co-ordinates"+p);
+                        // console.log("in mouseMoveListener printing co-ordinates"+p);
                         $(".finger-1")
                             .addClass("active")
                             .css("transform", 'translate3d(' + p.pageX + 'px,' + p.pageY + 'px,0)')
@@ -793,38 +755,7 @@
     // }
 </script>
 
-<script>
 
-    // var WSURL = "ws://" + window.location.host + "/websocket"
-
-    // function createTable(){
-    // 	var headers = device.apps.split(',');
-    // 	var table = "<table>";
-    // 	for (var i=0; i< headers.length; i++) {
-    // 	    table = table + "<tr><td>"+ headers[i]+"</td>";
-    // 	}
-    // 	table = table + "</table>";
-
-    // 	return table;
-    // }
-
-    // ws.onerror = function () {
-    //     console.log('onerror', arguments)
-    //     renderLoop.stop()
-    // }
-    // ws.onmessage = function (message) {
-    //     //console.log('got jpeg', arguments)
-    //     var blob = new Blob([message.data], {
-    //         type: 'image/jpeg'
-    //     })
-    //     pipeline.push(blob)
-    // }
-    // ws.onopen = function () {
-    //     console.log('onopen', arguments)
-    //     ws.send('1920x1080/0')
-    //     renderLoop.start()
-    // }
-</script>
 
     </body>
 </html>

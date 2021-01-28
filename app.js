@@ -26,9 +26,11 @@ app.get('/config.js', (req, res) => {
 
 //connected devices
 var ideviceList = Wda.getiDeviceList();
-console.log(ideviceList);
+console.log("ideviceList : "+ideviceList[0]);
 
-Wda.startWda();
+Wda.setDevice(ideviceList[0]);
+// Wda.startWda();
+Wda.start();
 
 //server
 const server = http.createServer(app)
@@ -43,37 +45,9 @@ wss.on('connection', function(socket) {
   socket.send(json);
 
   // Receive data from the client
-  socket.on('message', function(message) {
-    console.log('Received: ' + message);
-
-    if (message.type === "Tap"){
-
-    }
-          
-    if (message.type === "Double-Tap") {
-      
-    }
- 
-    if (message.type === "Tap-Hold") {
-      
-    }
-
-  });
-
-  // var size = null;
-  // console.log("Width : "+size.value.width);
-  // console.log("Height : "+size.value.height);
-  // console.log("deviceSize : "+Wda.getSize());
-  // Wda.getSize().then(resp => {
-  //   if(resp!=null){
-  //     console.log("size : "+JSON.stringify(resp))
-  //     this.size = JSON.stringify(resp);
-  //   }
+  // socket.on('message', function(message) {
+  //   console.log('Received: ' + message);
   // });
-  // console.log(this.size)
-  // if(this.size!= null)
-  //   socket.send(this.size);
-  
 
   // The connection was closed
   socket.on('close', function() {
@@ -87,6 +61,4 @@ wss.on('connection', function(socket) {
 });
 server.listen(PORT)
 
-
-
-console.info(`Listening on port ${PORT}`)
+console.info(`Listening on  `+util.format('http://127.0.0.1:%d',PORT))

@@ -25,10 +25,14 @@ app.get('/config.js', (req, res) => {
 })
 
 //connected devices
-var ideviceList = Wda.getiDeviceList();
-console.log("ideviceList : "+ideviceList[0]);
+//var ideviceList = Wda.getiDeviceList();
+//console.log("ideviceList : "+ideviceList[0]);
 
-Wda.setDevice(ideviceList[0]);
+//node app 00008101-001C15A20AD2001E
+var args = process.argv.slice(2);
+console.log('udid: ', args[0]);
+
+Wda.setDevice(args[0]);
 // Wda.startWda();
 Wda.start();
 
@@ -61,4 +65,4 @@ wss.on('connection', function(socket) {
 });
 server.listen(PORT)
 
-console.info(`Listening on  `+util.format('http://127.0.0.1:%d',PORT))
+console.info(`Listening on port ${PORT}`)

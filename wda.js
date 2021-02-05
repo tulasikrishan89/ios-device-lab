@@ -53,10 +53,9 @@ var WDA = {
   }
 
   ,startIproxy:function(localPort,remotePort){
-    //console.log("start iproxy with params:%d %d %s",localPort,remotePort,udid)
-    let pro = new Subprocess("iproxy",["-s","0.0.0.0","-u",udid,localPort,remotePort])
-    // let pro = new Subprocess("iproxy",["-u",WDA.getDevices(),localPort,remotePort])
-
+    console.log("start iproxy with params:%d %d %s",localPort,remotePort,udid)
+    //let pro = new Subprocess("iproxy",["-s","0.0.0.0","-u",udid,localPort,remotePort])
+    let pro = new Subprocess("iproxy",["-u",udid,localPort,remotePort])
     pro.start();
     // pro.on("exit",(code,signal)=>{
     //   console.log("exit with code :%d",code)
@@ -132,7 +131,7 @@ var WDA = {
         //   console.log("xcodebuild build successfully")
         // else 
         if (line.indexOf("ServerURLHere->")!=-1){
-          // console.log(line)
+          console.log(line)
           // console.log("WDA started successfully")
           WDA.launchApp('com.apple.Preferences');
           WDA.initSession();

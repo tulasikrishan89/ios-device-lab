@@ -4,6 +4,7 @@
 * brew install usbmuxd
 * brew install --HEAD libimobiledevice
 * brew install --HEAD ideviceinstaller
+* Test requirement: idevice_id -l
 
 ## Build
 1. npm install

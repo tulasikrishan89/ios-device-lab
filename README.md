@@ -1,6 +1,7 @@
 
 ## Requirements
 * [Node.js](https://nodejs.org/) >= 0.12
+* npm install node-ios-device
 * brew install usbmuxd
 * brew install --HEAD libimobiledevice
 * brew install --HEAD ideviceinstaller
